@@ -1,14 +1,9 @@
-
-const categories = require('./categories');
+const { getCategoriesList } = require("./getCategoriesList");
 const getRecipesByCategory = require("./getRecipesByCategory");
-
-
-const { ctrlWrapper } = require('../../helpers');
-
-
+const { getRecipeById } = require("./getRecipeById");
 
 module.exports = {
-  getRecipesByCategory
-  categories: ctrlWrapper(categories),
+  getCategoriesList,
+  getRecipesByCategory,
+  getRecipeById,
 };
-
