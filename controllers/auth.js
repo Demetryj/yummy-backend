@@ -67,19 +67,21 @@ const logout = async (req, res) => {
     });
 };
 
-//TODO update
 const update = async (req, res) => {
-    // const { _id } = req.user;
-    // const { path: tempUpload, originalname } = req.file;
-    // const filename = `${_id}_${originalname}`;
-    // const resultUpload = path.join(avatarsDir, filename);
-    // await fs.rename(tempUpload, resultUpload);
-    // const avatarURL = path.join("avatars", filename);
-    // await User.findByIdAndUpdate(_id, { avatarURL });
+    const { name: newName } = req.body;
+    const newAvatarUrl = req.file?.path;
+    const { _id, name, avatarURL } = req.user;
+
+    console.log("newAvatarUrl :>> ", newAvatarUrl);
+
+    const updateName = !!newName ? newName : name;
+    const updateAvatarURL = !!newAvatarUrl ? newAvatarUrl : avatarURL;
+
+    await User.findByIdAndUpdate(_id, { name: updateName, avatarURL: updateAvatarURL });
 
     res.json({
-        // avatarURL,
-        hello: "hi",
+        name: updateName,
+        avatarURL: updateAvatarURL,
     });
 };
 
