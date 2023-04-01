@@ -1,19 +1,19 @@
 const mongoose = require("mongoose");
 const app = require("./app");
 
-// const { DB_HOST, PORT = 3001 } = process.env;
-const { DB_HOST, PORT = 3001 } = require("./config");
+const { DB_HOST, PORT = 3001 } = process.env;
+// const { DB_HOST, PORT = 3001 } = require("./config");
 
 mongoose.set("strictQuery", true);
 
 mongoose
-  .connect(DB_HOST)
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log("Database connection successful");
+    .connect(DB_HOST)
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log("Database connection successful");
+        });
+    })
+    .catch((error) => {
+        console.log(error.message);
+        process.exit(1);
     });
-  })
-  .catch((error) => {
-    console.log(error.message);
-    process.exit(1);
-  });
