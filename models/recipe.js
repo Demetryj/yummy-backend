@@ -1,8 +1,10 @@
 const { Schema, model } = require("mongoose");
 
+
 const { handleMongooseError } = require("../helpers");
 
 const categoryVariants = [
+
   "Beef",
   "Breakfast",
   "Chicken",
@@ -18,6 +20,7 @@ const categoryVariants = [
   "Vegan",
   "Vegetarian",
 ];
+
 
 const recipeSchema = new Schema(
   {
@@ -99,3 +102,4 @@ const Recipe = model("recipe", recipeSchema);
 module.exports = {
   Recipe,
 };
+
