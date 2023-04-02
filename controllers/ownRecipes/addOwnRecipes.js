@@ -20,13 +20,7 @@ const addOwnRecipes = async (req, res) => {
     owner: _id,
   });
 
-  res.status(201).json({
-    status: "success",
-    code: 200,
-    data: {
-      result,
-    },
-  });
+  res.status(201).json({ result });
 };
 
 module.exports = {
