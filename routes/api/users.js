@@ -9,6 +9,7 @@ const {
 const { auth: ctrl } = require("../../controllers");
 const { ownRecipes: ownCtrl } = require("../../controllers");
 
+
 const { schemas } = require("../../models/recipe");
 
 router.post(
@@ -39,5 +40,8 @@ router.post(
 );
 
 router.delete("/:userId/own-recipes/:recipeId", ownCtrl.removeOwnRecipes);
+
+router.get("/info/:userId", auth, ctrl.getUserInfo);
+
 
 module.exports = router;
