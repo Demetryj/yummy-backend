@@ -86,10 +86,23 @@ const update = async (req, res) => {
   });
 };
 
+const getUserInfo = async (req, res) => {
+  const { userId } = req.params;
+  const result = await User.findById(
+    userId,
+    "-createdAt -updatedAt -password -token -_id"
+  );
+  if (!result) {
+    throw HttpError(404, "Not found");
+  }
+  res.json(result);
+};
+
 module.exports = {
   register: ctrlWrapper(register),
   signin: ctrlWrapper(signin),
   current: ctrlWrapper(current),
   logout: ctrlWrapper(logout),
   update: ctrlWrapper(update),
+  getUserInfo: ctrlWrapper(getUserInfo),
 };
