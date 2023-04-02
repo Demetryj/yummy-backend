@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const { User } = require("../models/user");
+const { Recipe } = require("../models/recipe");
 const { HttpError, ctrlWrapper } = require("../helpers");
 const { SECRET_KEY } = process.env;
 
@@ -88,14 +89,19 @@ const update = async (req, res) => {
 
 const getUserInfo = async (req, res) => {
   const { userId } = req.params;
-  const result = await User.findById(
-    userId,
-    "-createdAt -updatedAt -password -token -_id"
-  );
+  const result = await User.findById(userId, "-password -token -_id");
+
   if (!result) {
     throw HttpError(404, "Not found");
   }
-  res.json(result);
+  const favoritesRecipes = await Recipe.find(
+    { favorites: { $eq: userId } },
+    "-_id -likes -favorites"
+  );
+  const timeWithUs = Math.floor(
+    (Date.now() - Date.parse(result.createdAt)) / (24 * 60 * 60 * 1000)
+  ).toString();
+  res.json({ ...result._doc, timeWithUs, favoritesRecipes });
 };
 
 module.exports = {

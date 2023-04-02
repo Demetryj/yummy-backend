@@ -24,4 +24,5 @@ router.get("/logout", auth, controller.logout);
 router.get("/current", auth, controller.current);
 
 router.get("/info/:userId", auth, controller.getUserInfo);
+
 module.exports = router;
