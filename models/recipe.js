@@ -1,105 +1,87 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
-
-const { handleMongooseError } = require("../helpers");
+const { handleMongooseError } = require('../helpers');
 
 const categoryVariants = [
-
-  "Beef",
-  "Breakfast",
-  "Chicken",
-  "Dessert",
-  "Goat",
-  "Lamb",
-  "Miscellaneous",
-  "Pasta",
-  "Pork",
-  "Seafood",
-  "Side",
-  "Starter",
-  "Vegan",
-  "Vegetarian",
+  'Beef',
+  'Breakfast',
+  'Chicken',
+  'Dessert',
+  'Goat',
+  'Lamb',
+  'Miscellaneous',
+  'Pasta',
+  'Pork',
+  'Seafood',
+  'Side',
+  'Starter',
+  'Vegan',
+  'Vegetarian',
 ];
-
 
 const recipeSchema = new Schema(
   {
-    title:
-    {
+    title: {
       type: String,
-      required: true
+      required: true,
     },
-    category:
-    {
+    category: {
       type: String,
       enum: categoryVariants,
-      required: true
+      required: true,
     },
-    area:
-    {
+    area: {
       type: String,
-      required: true
+      required: true,
     },
-    instructions:
-    {
+    instructions: {
       type: String,
-      required: true
+      required: true,
     },
-    description:
-    {
+    description: {
       type: String,
-      required: true
+      required: true,
     },
-    thumb:
-    {
+    thumb: {
       type: String,
-      required: true
+      required: true,
     },
-    preview:
-    {
+    preview: {
       type: String,
-      required: true
+      required: true,
     },
-    time:
-    {
+    time: {
       type: String,
-      required: true
+      required: true,
     },
-    popularity:
-    {
+    popularity: {
       type: Number,
-      required: true
+      required: true,
     },
-    favorites:
-    {
-      type: [Schema.Types.ObjectId]
-    },
-    likes:
-    {
-      type: Array
-    },
-    youtube:
-    {
-      type: String
-    },
-    tags:
-    {
-      type: [String]
-    },
-    ingredients:
-    {
+    favorites: {
       type: [Schema.Types.ObjectId],
-      required: true
+    },
+    likes: {
+      type: Array,
+    },
+    youtube: {
+      type: String,
+    },
+    tags: {
+      type: [String],
+    },
+    ingredients: {
+      type: [Schema.Types.ObjectId],
+      required: true,
     },
   },
   { versionKey: false, timestamps: true }
 );
 
-recipeSchema.post("save", handleMongooseError);
+recipeSchema.post('save', handleMongooseError);
 
-const Recipe = model("recipe", recipeSchema);
+const Recipe = model('recipe', recipeSchema);
 
 module.exports = {
   Recipe,
 };
-
