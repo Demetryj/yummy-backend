@@ -9,7 +9,7 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_SECRET,
 });
 
-const alloweFormats = ["jpg", "png", "jpeg"];
+const allowedFormats = ["jpg", "png", "jpeg"];
 
 const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
@@ -19,12 +19,12 @@ const storage = new CloudinaryStorage({
             const splittedName = req.originalname.split(".");
             const ext = splittedName[splittedName.length - 1];
 
-            if (!alloweFormats.includes(ext)) {
+            if (!allowedFormats.includes(ext)) {
                 throw HttpError(406, "File format is not supported");
             }
         },
         public_id: (req, file) => req.user._id + "_" + file.originalname,
-        allowed_formats: alloweFormats,
+        allowed_formats: allowedFormats,
         transformation: { width: 150, height: 150, crop: "fill" },
     },
 });
