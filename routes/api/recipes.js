@@ -6,9 +6,9 @@ const { recipes: ctrl } = require("../../controllers");
 
 const router = express.Router();
 
-router.get("/:recipeId", isValidId, ctrl.getRecipeById);
+router.get("/:recipeId", auth, isValidId, ctrl.getRecipeById);
 
-router.get("/category/list", ctrl.getCategoriesList);
+router.get("/category/list", auth, ctrl.getCategoriesList);
 
 router.get("/category/:alias", auth, ctrl.getRecipesByCategory);
 
