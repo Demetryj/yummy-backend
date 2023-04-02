@@ -1,22 +1,22 @@
-const { Schema, model } = require('mongoose');
-
-const { handleMongooseError } = require('../helpers');
+const { Schema, model } = require("mongoose");
+const Joi = require("joi");
+const { handleMongooseError } = require("../helpers");
 
 const categoryVariants = [
-  'Beef',
-  'Breakfast',
-  'Chicken',
-  'Dessert',
-  'Goat',
-  'Lamb',
-  'Miscellaneous',
-  'Pasta',
-  'Pork',
-  'Seafood',
-  'Side',
-  'Starter',
-  'Vegan',
-  'Vegetarian',
+  "Beef",
+  "Breakfast",
+  "Chicken",
+  "Dessert",
+  "Goat",
+  "Lamb",
+  "Miscellaneous",
+  "Pasta",
+  "Pork",
+  "Seafood",
+  "Side",
+  "Starter",
+  "Vegan",
+  "Vegetarian",
 ];
 
 const recipeSchema = new Schema(
@@ -73,15 +73,36 @@ const recipeSchema = new Schema(
     ingredients: {
       type: [Schema.Types.ObjectId],
       required: true,
+      ref: "ingredient",
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
     },
   },
   { versionKey: false, timestamps: true }
 );
 
-recipeSchema.post('save', handleMongooseError);
+const addSchema = Joi.object({
+  title: Joi.string().required(),
+  description: Joi.string().required(),
+  category: Joi.string().required(),
+  time: Joi.string().required(),
+  // ingredients: Joi.objectId().required(),
+  ingredients: Joi.array().required(),
+  instructions: Joi.string().required(),
+});
+
+const schemas = {
+  addSchema,
+};
+
+recipeSchema.post("save", handleMongooseError);
+
 
 const Recipe = model('recipe', recipeSchema);
 
 module.exports = {
   Recipe,
+  schemas,
 };

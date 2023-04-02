@@ -17,7 +17,7 @@ const ingredientSchema = Schema({
     required: true,
   },
 });
-const Ingredient = model("Ingredient", ingredientSchema);
+const Ingredient = model("ingredient", ingredientSchema);
 
 module.exports = {
   Ingredient,

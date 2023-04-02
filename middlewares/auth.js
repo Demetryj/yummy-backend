@@ -5,9 +5,11 @@ const { HttpError } = require('../helpers');
 const { SECRET_KEY } = process.env;
 
 const auth = async (req, res, next) => {
-  const { authorization = '' } = req.headers;
-  const [bearer, token] = authorization.split(' ');
-  if (bearer !== 'Bearer' || token === '') {
+
+  const { authorization = "" } = req.headers;
+  const [bearer, token] = authorization.split(" ");
+  if (token === "" || bearer !== "Bearer") {
+
     next(HttpError(401));
   }
   try {
