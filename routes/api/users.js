@@ -23,4 +23,6 @@ router.get("/logout", auth, ctrl.logout);
 
 router.get("/current", auth, ctrl.current);
 
+router.get("/info/:userId", auth, ctrl.getUserInfo);
+
 module.exports = router;
