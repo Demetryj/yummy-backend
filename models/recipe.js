@@ -99,7 +99,8 @@ const schemas = {
 
 recipeSchema.post("save", handleMongooseError);
 
-const Recipe = model("recipe", recipeSchema);
+
+const Recipe = model('recipe', recipeSchema);
 
 module.exports = {
   Recipe,
