@@ -1,7 +1,6 @@
 const express = require("express");
 
-const { isValidId } = require("../../middlewares");
-const { ctrlWrapper } = require("../../helpers");
+const { isValidId, auth } = require("../../middlewares");
 
 const { recipes: ctrl } = require("../../controllers");
 
@@ -11,6 +10,6 @@ router.get("/:recipeId", isValidId, ctrl.getRecipeById);
 
 router.get("/category/list", ctrl.getCategoriesList);
 
-router.get("/:category", ctrlWrapper(ctrl.getRecipesByCategory));
+router.get("/category/:alias", auth, ctrl.getRecipesByCategory);
 
 module.exports = router;

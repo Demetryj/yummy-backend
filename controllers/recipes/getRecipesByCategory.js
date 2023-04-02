@@ -1,15 +1,15 @@
 const { Recipe } = require("../../models/recipe");
-const { HttpError } = require("../../helpers");
+const { HttpError, ctrlWrapper } = require("../../helpers");
 
 const getRecipesByCategory = async (req, res) => {
   const { page = 1, limit = 8 } = req.query;
-  const { category } = req.params;
+  const { alias } = req.params;
   console.log(req.params);
 
   const skip = (page - 1) * limit;
 
   const result = await Recipe.find(
-    { category: category },
+    { category: alias },
     "-createdAt -updatedAt",
     {
       skip,
@@ -21,4 +21,4 @@ const getRecipesByCategory = async (req, res) => {
   }
   res.json(result);
 };
-module.exports = getRecipesByCategory;
+module.exports = { getRecipesByCategory: ctrlWrapper(getRecipesByCategory) };
