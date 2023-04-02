@@ -3,11 +3,11 @@ const logger = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
 
-
 const authRouter = require("./routes/api/auth");
 
 const recipesRouter = require("./routes/api/recipes");
 
+const searchRouter = require("./routes/api/search");
 
 const app = express();
 
@@ -18,18 +18,17 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
-
 app.use("/api/auth", authRouter);
 app.use("/api/recipes", recipesRouter);
-
+app.use("/api/search", searchRouter);
 
 app.use((req, res) => {
-    res.status(404).json({ message: "Not found" });
+  res.status(404).json({ message: "Not found" });
 });
 
 app.use((err, req, res, next) => {
-    const { status = 500, message = "Server error" } = err;
-    res.status(status).json({ message });
+  const { status = 500, message = "Server error" } = err;
+  res.status(status).json({ message });
 });
 
 module.exports = app;

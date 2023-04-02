@@ -9,7 +9,7 @@ router.post("/register", validateBodyWrapper(authValidators.register), controlle
 
 router.post("/signin", validateBodyWrapper(authValidators.signin), controller.signin);
 
-//POST method for /update to ease front end life: form data works only with post by default
+// POST method for /update to ease front end life: form data works only with post by default
 router.post("/update", auth, uploadCloud.single("avatar"), controller.update);
 
 router.get("/logout", auth, controller.logout);
