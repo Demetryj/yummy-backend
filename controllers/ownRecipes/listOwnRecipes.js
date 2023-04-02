@@ -11,13 +11,8 @@ const listOwnRecipes = async (req, res) => {
     skip,
     limit: Number(limit),
   }).populate("owner", "name email");
-  res.jsonn({
-    status: "success",
-    code: 200,
-    data: {
-      result,
-    },
-  });
+
+  res.json({ result });
 };
 
 module.exports = {
