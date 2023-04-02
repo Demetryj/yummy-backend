@@ -13,6 +13,8 @@ const storage = new CloudinaryStorage({
     params: {
         folder: "yummi-avatars",
         public_id: (req, file) => req.user._id + "_" + file.originalname,
+        allowed_formats: ["jpg", "png", "jpeg"],
+        transformation: { width: 150, height: 150, crop: "fill" },
     },
 });
 
