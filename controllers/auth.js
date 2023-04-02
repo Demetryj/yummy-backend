@@ -94,10 +94,11 @@ const getUserInfo = async (req, res) => {
   if (!result) {
     throw HttpError(404, "Not found");
   }
-  const favoritesRecipes = await Recipe.find(
+  let favoritesRecipes = await Recipe.find(
     { favorites: { $eq: userId } },
     "-_id -likes -favorites"
   );
+  favoritesRecipes = !favoritesRecipes ? [] : favoritesRecipes;
   const timeWithUs = Math.floor(
     (Date.now() - Date.parse(result.createdAt)) / (24 * 60 * 60 * 1000)
   ).toString();
