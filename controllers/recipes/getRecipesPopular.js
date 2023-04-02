@@ -9,7 +9,11 @@ const getRecipesPopular = async (req, res) => {
   if (!data) {
     throw HttpError(404, 'Not found');
   }
-  const result = data.filter((item) => item.popularity >= 3);
+
+  // const result = data.filter((item) => item.popularity >= 3);
+  // res.json(result);
+
+  const result = data.filter((item) => item.favorites.length >= 15);
   res.json(result);
 };
 
