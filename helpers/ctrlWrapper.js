@@ -1,14 +1,18 @@
 const ctrlWrapper = ctrl => {
-    const func = async(req, res, next) => {
-        try {
-            await ctrl(req, res, next);
-        }
-        catch(error) {
-            next(error);
-        }
-    }
+  const func = async (req, res, next) => {
+    try {
+      await ctrl(req, res, next);
+    } catch (error) {
+      if (error.kind === 'ObjectId') {
+        error.status = 404;
+        error.message = 'Not found';
+      }
 
-    return func;
-}
+      next(error);
+    }
+  };
+
+  return func;
+};
 
 module.exports = ctrlWrapper;
