@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 
+const subscriptionEmail = require('../../data/subscriptionEmail');
 const { HttpError, sendEmail } = require('../../helpers');
 const { User } = require('../../models/user');
 
@@ -21,10 +22,11 @@ const sendSubscriptionEmail = async (req, res) => {
   const subscribedToken = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
   await User.findByIdAndUpdate(_id, { subscribedToken });
 
+  const subscriptionLink = `${BASE_URL}/api/users/current/subscribe/${subscribedToken}`;
   const verifySubscription = {
     to: email,
     subject: 'Confirmation to SoYummy news subscription',
-    html: `<a target="_blank" href="${BASE_URL}/api/users/current/subscribe/${subscribedToken}">Click to get more news about our product!</a>`,
+    html: subscriptionEmail(subscriptionLink),
   };
 
   sendEmail(verifySubscription);
