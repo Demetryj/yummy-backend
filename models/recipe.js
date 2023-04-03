@@ -1,23 +1,8 @@
 const { Schema, model } = require('mongoose');
 const Joi = require('joi');
-const { handleMongooseError } = require('../helpers');
 
-const categoryVariants = [
-  'Beef',
-  'Breakfast',
-  'Chicken',
-  'Dessert',
-  'Goat',
-  'Lamb',
-  'Miscellaneous',
-  'Pasta',
-  'Pork',
-  'Seafood',
-  'Side',
-  'Starter',
-  'Vegan',
-  'Vegetarian',
-];
+const { handleMongooseError } = require('../helpers');
+const {getCategoriesList} = require('../controllers/recipes/getCategoriesList')
 
 const recipeSchema = new Schema(
   {
@@ -27,8 +12,10 @@ const recipeSchema = new Schema(
     },
     category: {
       type: String,
-      enum: categoryVariants,
-      required: true,
+
+      enum: getCategoriesList,
+      required: true
+
     },
     area: {
       type: String,
