@@ -1,4 +1,4 @@
-const { Recipe } = require('../../models/recipe');
+const { Recipe, User } = require('../../models/recipe');
 
 const { HttpError, ctrlWrapper } = require('../../helpers');
 
@@ -9,16 +9,20 @@ const updateFavorites = async (req, res) => {
 
   const result =
     favorites === 'true'
-      ? await Recipe.findByIdAndUpdate(
+      ? (await User.findByIdAndUpdate(owner, {
+          $addToSet: { favorites: id },
+        })) &&
+        (await Recipe.findByIdAndUpdate(
           id,
           { $addToSet: { favorites: owner } },
           { new: true }
-        )
-      : await Recipe.findByIdAndUpdate(
+        ))
+      : (await User.findByIdAndUpdate(owner, { $pull: { favorites: id } })) &&
+        (await Recipe.findByIdAndUpdate(
           id,
           { $pull: { favorites: owner } },
           { new: true }
-        );
+        ));
 
   if (!result) {
     throw HttpError(404, 'Not Found');
