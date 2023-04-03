@@ -1,88 +1,96 @@
 const { Schema, model } = require("mongoose");
-
-
+const Joi = require("joi");
 const { handleMongooseError } = require("../helpers");
 
 const {getCategoriesList} = require('../controllers/recipes/getCategoriesList')
 
+
 const recipeSchema = new Schema(
   {
-    title:
-    {
+    title: {
       type: String,
-      required: true
+      required: true,
     },
-    category:
-    {
+    category: {
       type: String,
+
       enum: getCategoriesList,
       required: true
+
     },
-    area:
-    {
+    area: {
       type: String,
-      required: true
+      required: true,
     },
-    instructions:
-    {
+    instructions: {
       type: String,
-      required: true
+      required: true,
     },
-    description:
-    {
+    description: {
       type: String,
-      required: true
+      required: true,
     },
-    thumb:
-    {
+    thumb: {
       type: String,
-      required: true
+      required: true,
     },
-    preview:
-    {
+    preview: {
       type: String,
-      required: true
+      required: true,
     },
-    time:
-    {
+    time: {
       type: String,
-      required: true
+      required: true,
     },
-    popularity:
-    {
+    popularity: {
       type: Number,
-      required: true
+      required: true,
     },
-    favorites:
-    {
-      type: [Schema.Types.ObjectId]
-    },
-    likes:
-    {
-      type: Array
-    },
-    youtube:
-    {
-      type: String
-    },
-    tags:
-    {
-      type: [String]
-    },
-    ingredients:
-    {
+    favorites: {
       type: [Schema.Types.ObjectId],
-      required: true
+    },
+    likes: {
+      type: Array,
+    },
+    youtube: {
+      type: String,
+    },
+    tags: {
+      type: [String],
+    },
+    ingredients: {
+      type: [Schema.Types.ObjectId],
+      required: true,
+      ref: "ingredient",
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
     },
   },
   { versionKey: false, timestamps: true }
 );
 
+const addSchema = Joi.object({
+  title: Joi.string().required(),
+  description: Joi.string().required(),
+  category: Joi.string().required(),
+  time: Joi.string().required(),
+  // ingredients: Joi.objectId().required(),
+  ingredients: Joi.array().required(),
+  instructions: Joi.string().required(),
+});
+
+const schemas = {
+  addSchema,
+};
+
 recipeSchema.post("save", handleMongooseError);
 
-const Recipe = model("recipe", recipeSchema);
+
+const Recipe = model('recipe', recipeSchema);
 
 module.exports = {
   Recipe,
+  schemas,
 };
-
