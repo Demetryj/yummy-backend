@@ -13,7 +13,7 @@ router.get('/category/list', auth, ctrl.getCategoriesList);
 router.get('/category/:alias', auth, ctrl.getRecipesByCategory);
 router.get('/all/popular', auth, ctrl.getRecipesPopular);
 
-router.patch('/:id/favorites', auth, isValidId, ctrl.updateFavorites);
+router.patch('/:recipeId/favorites', auth, isValidId, ctrl.updateFavorites);
 
 router.get('/favorites/favorites', auth, ctrl.getFavorites);
 

@@ -4,7 +4,7 @@ const { HttpError, ctrlWrapper } = require('../../helpers');
 
 const updateFavorites = async (req, res) => {
   const { _id: owner } = req.user;
-  const { id } = req.params;
+  const { recipeId: id } = req.params;
   const { favorites } = req.query;
 
   const result =
