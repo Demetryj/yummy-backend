@@ -11,6 +11,6 @@ router.get('/:recipeId', auth, isValidId, ctrl.getRecipeById);
 router.get('/category/list', auth, ctrl.getCategoriesList);
 
 router.get('/category/:alias', auth, ctrl.getRecipesByCategory);
-router.get('/all/popular', ctrl.getRecipesPopular);
+router.get('/all/popular', auth, ctrl.getRecipesPopular);
 
 module.exports = router;
