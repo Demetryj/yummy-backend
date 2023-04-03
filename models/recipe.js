@@ -3,24 +3,7 @@ const { Schema, model } = require("mongoose");
 
 const { handleMongooseError } = require("../helpers");
 
-const categoryVariants = [
-
-  "Beef",
-  "Breakfast",
-  "Chicken",
-  "Dessert",
-  "Goat",
-  "Lamb",
-  "Miscellaneous",
-  "Pasta",
-  "Pork",
-  "Seafood",
-  "Side",
-  "Starter",
-  "Vegan",
-  "Vegetarian",
-];
-
+const {getCategoriesList} = require('../controllers/recipes/getCategoriesList')
 
 const recipeSchema = new Schema(
   {
@@ -32,7 +15,7 @@ const recipeSchema = new Schema(
     category:
     {
       type: String,
-      enum: categoryVariants,
+      enum: getCategoriesList,
       required: true
     },
     area:
