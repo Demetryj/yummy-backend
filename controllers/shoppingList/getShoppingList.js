@@ -6,9 +6,9 @@ const getShoppingList = async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
   const skip = (page - 1) * limit;
 
-  const data = await ShoppingList.find({ owner: _id }, '', { skip, limit: Number(limit) });
+  const result = await ShoppingList.find({ owner: _id }, '', { skip, limit: Number(limit) });
 
-  res.json(data);
+  res.json(result);
 };
 
 module.exports = { getShoppingList: ctrlWrapper(getShoppingList) };
