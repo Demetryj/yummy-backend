@@ -46,7 +46,7 @@ router.post(
   ownCtrl.addOwnRecipes
 );
 
-router.delete("/:userId/own-recipes/:recipeId", ownCtrl.removeOwnRecipes);
+router.delete("/:userId/own-recipes/:id", auth, ownCtrl.removeOwnRecipes);
 
 router.get("/info/:userId", auth, ctrl.getUserInfo);
 
