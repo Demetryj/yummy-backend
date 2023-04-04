@@ -1,10 +1,8 @@
 const { Schema, model } = require("mongoose");
 
-
 const { handleMongooseError } = require("../helpers");
 
 const categoryVariants = [
-
   "Beef",
   "Breakfast",
   "Chicken",
@@ -21,75 +19,61 @@ const categoryVariants = [
   "Vegetarian",
 ];
 
-
 const recipeSchema = new Schema(
   {
-    title:
-    {
+    title: {
       type: String,
-      required: true
+      required: true,
     },
-    category:
-    {
+    category: {
       type: String,
       enum: categoryVariants,
-      required: true
+      required: true,
     },
-    area:
-    {
+    area: {
       type: String,
-      required: true
+      required: true,
     },
-    instructions:
-    {
+    instructions: {
       type: String,
-      required: true
+      required: true,
     },
-    description:
-    {
+    description: {
       type: String,
-      required: true
+      required: true,
     },
-    thumb:
-    {
+    thumb: {
       type: String,
-      required: true
+      required: true,
     },
-    preview:
-    {
+    preview: {
       type: String,
-      required: true
+      required: true,
     },
-    time:
-    {
+    time: {
       type: String,
-      required: true
+      required: true,
     },
-    popularity:
-    {
+    popularity: {
       type: Number,
-      required: true
+      required: true,
     },
-    favorites:
-    {
-      type: [Schema.Types.ObjectId]
+    favorites: {
+      type: Array,
+      required: true,
     },
-    likes:
-    {
-      type: Array
+    likes: {
+      type: Array,
     },
-    youtube:
-    {
-      type: String
+    youtube: {
+      type: String,
     },
-    tags:
-    {
-      type: [String]
+    tags: {
+      type: Array,
     },
-    ingredients:
-    {
-      type: [Schema.Types.ObjectId],
-      required: true
+    ingredients: {
+      type: Array,
+      required: true,
     },
   },
   { versionKey: false, timestamps: true }
@@ -102,4 +86,3 @@ const Recipe = model("recipe", recipeSchema);
 module.exports = {
   Recipe,
 };
-

@@ -2,14 +2,15 @@ const express = require("express");
 
 const { isValidId, auth } = require("../../middlewares");
 
-const { recipes: ctrl } = require("../../controllers");
+const { recipesControllers } = require("../../controllers");
 
 const router = express.Router();
 
-router.get("/:recipeId", auth, isValidId, ctrl.getRecipeById);
+router.get("/:recipeId", auth, isValidId, recipesControllers.getRecipeById);
 
-router.get("/category/list", auth, ctrl.getCategoriesList);
+router.get("/category/list", auth, recipesControllers.getCategoriesList);
 
-router.get("/category/:alias", auth, ctrl.getRecipesByCategory);
+router.get("/category/:alias", auth, recipesControllers.getRecipesByCategory);
+
 
 module.exports = router;

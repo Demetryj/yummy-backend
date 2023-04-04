@@ -17,7 +17,7 @@ const auth = async (req, res, next) => {
       next(HttpError(401));
     }
 
-    //add user to next
+    // add user to next
     req.user = user;
     next();
   } catch {

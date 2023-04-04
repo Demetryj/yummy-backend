@@ -6,23 +6,32 @@ const {
   auth,
   uploadCloud,
 } = require("../../middlewares/index");
-const { auth: ctrl } = require("../../controllers");
+const { authControllers } = require("../../controllers");
 
 router.post(
   "/register",
   validateBodyWrapper(authValidators.register),
-  ctrl.register
+  authControllers.register
 );
 
-router.post("/signin", validateBodyWrapper(authValidators.signin), ctrl.signin);
+router.post(
+  "/signin",
+  validateBodyWrapper(authValidators.signin),
+  authControllers.signin
+);
 
 // POST method for /update to ease front end life: form data works only with post by default
-router.post("/update", auth, uploadCloud.single("avatar"), ctrl.update);
+router.post(
+  "/update",
+  auth,
+  uploadCloud.single("avatar"),
+  authControllers.update
+);
 
-router.get("/logout", auth, ctrl.logout);
+router.get("/logout", auth, authControllers.logout);
 
-router.get("/current", auth, ctrl.current);
+router.get("/current", auth, authControllers.current);
 
-router.get("/info/:userId", auth, ctrl.getUserInfo);
+router.get("/info/:userId", auth, authControllers.getUserInfo);
 
 module.exports = router;

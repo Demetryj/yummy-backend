@@ -1,9 +1,9 @@
-const recipes = require("./recipes");
-const auth = require("./auth");
-const ingredients = require("./ingredients");
+const recipesControllers = require("./recipes");
+const authControllers = require("./auth");
+const ingredientsControllers = require("./ingredients");
 
 module.exports = {
-  recipes,
-  auth,
-  ingredients,
+  recipesControllers,
+  authControllers,
+  ingredientsControllers,
 };

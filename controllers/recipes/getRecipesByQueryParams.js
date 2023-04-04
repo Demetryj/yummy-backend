@@ -1,14 +1,13 @@
 const { Recipe } = require("../../models/recipe");
-const { HttpError, ctrlWrapper } = require("../../helpers");
+const { HttpError } = require("../../helpers");
 
 const getRecipesByQueryParams = async (req, res) => {
   const { keyword = "", page = 1, limit = 8 } = req.query;
-  const { category } = req.params;
 
   const skip = (page - 1) * limit;
 
   const result = await Recipe.find(
-    { [category]: { $regex: "^" + keyword, $options: "i" } },
+    { title: { $regex: "^" + keyword, $options: "i" } },
     "-createdAt -updatedAt",
     {
       skip,
@@ -20,4 +19,4 @@ const getRecipesByQueryParams = async (req, res) => {
   }
   res.json(result);
 };
-module.exports = {getRecipesByQueryParams:ctrlWrapper(getRecipesByQueryParams)};
+module.exports = getRecipesByQueryParams;
