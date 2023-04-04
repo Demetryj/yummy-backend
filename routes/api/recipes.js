@@ -8,13 +8,13 @@ const router = express.Router();
 
 router.get('/main-page', auth, ctrl.getRecipes);
 
+router.get('/popular-recipes', auth, ctrl.getRecipesPopular);
+
 router.get('/:recipeId', auth, isValidId, ctrl.getRecipeById);
 
 router.get('/category/list', auth, ctrl.getCategoriesList);
 
 router.get('/category/:alias', auth, ctrl.getRecipesByCategory);
-
-router.get('/all/popular', auth, ctrl.getRecipesPopular);
 
 router.patch('/:recipeId/favorites', auth, isValidId, ctrl.updateFavorites);
 
