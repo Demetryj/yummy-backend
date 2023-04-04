@@ -1,6 +1,6 @@
 const { Recipe } = require("../../models/recipe");
 
-//TODO: the variables "categoriesPopular" and "qtty" are planned to come from the frontend
+// TODO: the variables "categoriesPopular" and "qtty" are planned to come from the frontend
 const categoriesPopular = ["Breakfast", "Miscellaneous", "Vegan", "Dessert"];
 const qtty = 4;
 
@@ -20,13 +20,13 @@ const getRecipes = async (req, res) => {
     }, {});
   };
 
-  const grouped = groupBy(recipes, "category"); //the variable "grouped" is object
+  const result = groupBy(recipes, "category"); // the variable "result" is object
 
-  Object.keys(grouped).forEach((key) => {
-    grouped[key] = grouped[key].slice(0, qtty);
+  Object.keys(result).forEach((key) => {
+    result[key] = result[key].slice(0, qtty);
   });
 
-  res.status(200).json({ grouped });
+  res.status(200).json({ result });
 };
 
 module.exports = { getRecipes };
