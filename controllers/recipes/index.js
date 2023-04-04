@@ -5,6 +5,9 @@ const { getRecipeById } = require("./getRecipeById");
 const { getRecipesByQueryParams } = require("./getRecipesByQueryParams");
 const { getRecipesPopular } = require("./getRecipesPopular");
 const { getRecipes } = require("./getRecipes");
+const { updateFavorites } = require('./updateFavorites');
+const { getFavorites } = require('./getFavorites');
+
 
 module.exports = {
   getCategoriesList,
@@ -12,5 +15,7 @@ module.exports = {
   getRecipeById,
   getRecipesByQueryParams,
   getRecipesPopular,
+  updateFavorites,
+  getFavorites,
   getRecipes: ctrlWrapper(getRecipes),
 };
