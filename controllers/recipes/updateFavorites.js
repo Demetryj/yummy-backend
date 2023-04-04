@@ -1,6 +1,6 @@
 const { Recipe, User } = require('../../models/recipe');
 
-const { HttpError, ctrlWrapper } = require('../../helpers');
+const { HttpError} = require('../../helpers');
 
 const updateFavorites = async (req, res) => {
   const { _id: owner } = req.user;
@@ -31,6 +31,4 @@ const updateFavorites = async (req, res) => {
   res.json({ result });
 };
 
-module.exports = {
-  updateFavorites: ctrlWrapper(updateFavorites),
-};
+module.exports = updateFavorites;

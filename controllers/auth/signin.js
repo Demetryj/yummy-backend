@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const { User } = require("../../models/user");
-const { HttpError, ctrlWrapper } = require("../../helpers");
+const { HttpError} = require("../../helpers");
 const { SECRET_KEY } = process.env;
 
 const signin = async (req, res) => {
@@ -31,6 +31,4 @@ const signin = async (req, res) => {
     });
 };
 
-module.exports = {
-    signin: ctrlWrapper(signin),
-};
+module.exports = signin;

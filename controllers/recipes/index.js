@@ -1,21 +1,21 @@
 const { ctrlWrapper } = require("../../helpers");
-const { getCategoriesList } = require("./getCategoriesList");
-const { getRecipesByCategory } = require("./getRecipesByCategory");
-const { getRecipeById } = require("./getRecipeById");
-const { getRecipesByQueryParams } = require("./getRecipesByQueryParams");
-const { getRecipesPopular } = require("./getRecipesPopular");
-const { getRecipes } = require("./getRecipes");
-const { updateFavorites } = require('./updateFavorites');
-const { getFavorites } = require('./getFavorites');
+const getCategoriesList = require("./getCategoriesList");
+const getRecipesByCategory = require("./getRecipesByCategory");
+const getRecipeById = require("./getRecipeById");
+const getRecipesByQueryParams = require("./getRecipesByQueryParams");
+const getRecipesPopular = require("./getRecipesPopular");
+const getRecipes = require("./getRecipes");
+const updateFavorites = require("./updateFavorites");
+const getFavorites = require("./getFavorites");
 
-
-module.exports = {
-  getCategoriesList,
-  getRecipesByCategory,
-  getRecipeById,
-  getRecipesByQueryParams,
-  getRecipesPopular,
-  updateFavorites,
-  getFavorites,
+const recipes = {
+  getCategoriesList: ctrlWrapper(getCategoriesList),
+  getRecipesByCategory: ctrlWrapper(getRecipesByCategory),
+  getRecipeById: ctrlWrapper(getRecipeById),
+  getRecipesByQueryParams: ctrlWrapper(getRecipesByQueryParams),
+  getRecipesPopular: ctrlWrapper(getRecipesPopular),
+  updateFavorites: ctrlWrapper(updateFavorites),
+  getFavorites: ctrlWrapper(getFavorites),
   getRecipes: ctrlWrapper(getRecipes),
 };
+module.exports = recipes;

@@ -1,5 +1,5 @@
 const { Recipe } = require("../../models");
-const { HttpError, ctrlWrapper } = require("../../helpers");
+const { HttpError } = require("../../helpers");
 
 const removeOwnRecipes = async (req, res) => {
   const { id } = req.params;
@@ -12,6 +12,4 @@ const removeOwnRecipes = async (req, res) => {
   res.json({ result });
 };
 
-module.exports = {
-  removeOwnRecipes: ctrlWrapper(removeOwnRecipes),
-};
+module.exports = removeOwnRecipes;
