@@ -4,7 +4,6 @@ const { HttpError, ctrlWrapper } = require("../../helpers");
 const getRecipesByCategory = async (req, res) => {
   const { page = 1, limit = 8 } = req.query;
   const { alias } = req.params;
-  console.log(req.params);
 
   const skip = (page - 1) * limit;
 
