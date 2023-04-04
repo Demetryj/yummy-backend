@@ -4,7 +4,7 @@ const { HttpError, ctrlWrapper } = require("../../helpers");
 const addOwnRecipes = async (req, res) => {
   const { _id } = req.user;
 
-  let { title, description, category, time, ingredients, instructions } =
+  const { title, description, category, time, ingredients, instructions } =
     req.body;
 
   if (title) {
