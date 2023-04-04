@@ -9,8 +9,9 @@ const getRecipesByIngredient = async (req, res) => {
   const skip = (page - 1) * limit;
 
   const result1 = await Ingredient.find({ ttl: ingredient });
-  if (!result1) throw new HttpError(404);
-
+  if (result1.length === 0 || !result1) {
+    throw HttpError(404);
+  }
   const result = await Recipe.aggregate([
     {
       $match: {
@@ -39,8 +40,8 @@ const getRecipesByIngredient = async (req, res) => {
     .skip(skip)
     .limit(limit);
 
-  if (result.length === 0) {
-    throw HttpError(404, "No recipe names containing such symbols were found");
+  if (result[0].data.length === 0) {
+    throw HttpError(404);
   }
   res.json(result);
 };
