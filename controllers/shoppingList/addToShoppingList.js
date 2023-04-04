@@ -1,6 +1,5 @@
 const { ctrlWrapper } = require('../../helpers');
 const { ShoppingList } = require('../../models');
-
 const addToShoppingList = async (req, res) => {
   const { _id } = req.user;
 
