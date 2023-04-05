@@ -1,7 +1,7 @@
-const getShoppingList = require("./getShoppingList");
-const addToShoppingList = require("./addToShoppingList");
-const removeFromShoppingList = require("./removeFromShoppingList");
-const { ctrlWrapper } = require("../../helpers");
+const getShoppingList = require('./getShoppingList');
+const addToShoppingList = require('./addToShoppingList');
+const removeFromShoppingList = require('./removeFromShoppingList');
+const { ctrlWrapper } = require('../../helpers');
 
 const shoppingList = {
   getShoppingList: ctrlWrapper(getShoppingList),

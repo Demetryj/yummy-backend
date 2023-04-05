@@ -9,8 +9,8 @@ const {
 
 const { authControllers, ownRecipesControllers } = require("../../controllers");
 
-const { auth: ctrl } = require("../../controllers");
-const { ownRecipes: ownCtrl } = require("../../controllers");
+const { authControllers: ctrl } = require('../../controllers');
+const { ownRecipesControllers: ownCtrl } = require('../../controllers');
 
 
 const { schemas } = require("../../models/recipe");
@@ -22,7 +22,7 @@ router.post(
 );
 
 
-router.post("/signin", validateBodyWrapper(authValidators.signin), ctrl.signin);
+router.post('/signin', validateBodyWrapper(authValidators.signin), ctrl.signin);
 
 
 // POST method for /update to ease front end life: form data works only with post by default
