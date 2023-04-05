@@ -3,9 +3,9 @@ const { User, Ingredient } = require('../../models');
 
 const removeFromShoppingList = async (req, res) => {
   const { _id } = req.user;
-  const { query } = req.query;
+  const { productsId } = req.params;
 
-  const [ingredient] = await Ingredient.find({ ttl: query });
+  const [ingredient] = await Ingredient.find({ _id: productsId });
 
   const user = await User.findById(_id);
 
@@ -19,7 +19,7 @@ const removeFromShoppingList = async (req, res) => {
   user.shoppingList = filteredList;
   await user.save();
 
-  res.json({ message: `ingredient ${query} has been deleted` });
+  res.json({ message: `ingredient ID: ${productsId} has been deleted` });
 };
 
 module.exports = { removeFromShoppingList: ctrlWrapper(removeFromShoppingList) };

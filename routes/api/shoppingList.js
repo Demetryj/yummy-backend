@@ -6,7 +6,7 @@ const { shoppingList: ctrl } = require('../../controllers');
 const router = express.Router();
 
 router.get('/', auth, ctrl.getShoppingList);
-router.post('/', auth, ctrl.addToShoppingList);
-router.delete('/', auth, ctrl.removeFromShoppingList);
+router.post('/:productsId', auth, ctrl.addToShoppingList);
+router.delete('/:productsId', auth, ctrl.removeFromShoppingList);
 
 module.exports = router;
