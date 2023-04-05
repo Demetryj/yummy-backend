@@ -1,13 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-  recipesControllers,
-  ingredientsControllers,
-} = require("../../controllers");
+const { recipesCtrl, ingredientsCtrl } = require("../../controllers");
 const { auth } = require("../../middlewares");
 
-router.get("/", auth, recipesControllers.getRecipesByQueryParams);
-router.get("/:ingredient", auth, ingredientsControllers.getRecipesByIngredient);
+router.get("/", auth, recipesCtrl.getRecipesByQueryParams);
+router.get("/:ingredient", auth, ingredientsCtrl.getRecipesByIngredient);
 
 module.exports = router;

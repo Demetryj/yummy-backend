@@ -12,6 +12,7 @@ const getRecipesByIngredient = async (req, res) => {
   if (result1.length === 0 || !result1) {
     throw HttpError(404);
   }
+
   const result = await Recipe.aggregate([
     {
       $match: {
@@ -37,7 +38,6 @@ const getRecipesByIngredient = async (req, res) => {
     data: [{ $skip: +skip }, { $limit: +limit }],
   });
 
-  result;
   if (result[0].data.length === 0) {
     throw HttpError(404);
   }
