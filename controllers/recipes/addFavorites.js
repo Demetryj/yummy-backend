@@ -1,6 +1,6 @@
-const { Recipe, User } = require('../../models');
+const { Recipe, User } = require("../../models");
 
-const { HttpError, ctrlWrapper } = require('../../helpers');
+const { HttpError } = require("../../helpers");
 
 const addFavorites = async (req, res) => {
   const { _id: owner } = req.user;
@@ -19,7 +19,7 @@ const addFavorites = async (req, res) => {
   );
 
   if (!result || !user) {
-    throw HttpError(404, 'Not Found');
+    throw HttpError(404, "Not Found");
   }
 
   res.json({
