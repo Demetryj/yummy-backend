@@ -1,5 +1,4 @@
 const { User } = require("../../models/user");
-const { ctrlWrapper } = require("../../helpers");
 
 const update = async (req, res) => {
     const { name: newName } = req.body;
@@ -20,6 +19,4 @@ const update = async (req, res) => {
     });
 };
 
-module.exports = {
-    update: ctrlWrapper(update),
-};
+module.exports = update;

@@ -1,6 +1,6 @@
 const { Recipe } = require('../../models/recipe');
 
-const { HttpError, ctrlWrapper } = require('../../helpers');
+const { HttpError} = require('../../helpers');
 
 const getRecipesPopular = async (req, res) => {
   const { page = 1, limit = 4 } = req.query;
@@ -12,6 +12,4 @@ const getRecipesPopular = async (req, res) => {
   res.json(data);
 };
 
-module.exports = {
-  getRecipesPopular: ctrlWrapper(getRecipesPopular),
-};
+module.exports = getRecipesPopular;

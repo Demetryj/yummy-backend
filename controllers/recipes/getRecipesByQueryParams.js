@@ -1,5 +1,5 @@
 const { Recipe } = require("../../models/recipe");
-const { HttpError, ctrlWrapper } = require("../../helpers");
+const { HttpError} = require("../../helpers");
 
 const getRecipesByQueryParams = async (req, res) => {
   const { keyword = "", page = 1, limit = 8 } = req.query;
@@ -20,4 +20,4 @@ const getRecipesByQueryParams = async (req, res) => {
   }
   res.json(result);
 };
-module.exports = {getRecipesByQueryParams:ctrlWrapper(getRecipesByQueryParams)};
+module.exports = getRecipesByQueryParams;

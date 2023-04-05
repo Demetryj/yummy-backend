@@ -1,15 +1,13 @@
-const recipes = require('./recipes');
-const auth = require('./auth');
-
-const ownRecipes = require('./ownRecipes');
-
-const ingredients = require('./ingredients');
-const shoppingList = require('./shoppingList');
+const recipesControllers = require("./recipes");
+const authControllers = require("./auth");
+const ownRecipesControllers = require("./ownRecipes");
+const ingredientsControllers = require("./ingredients");
+const shoppingListControllers = require("./shoppingList");
 
 module.exports = {
-  recipes,
-  auth,
-  ownRecipes,
-  ingredients,
-  shoppingList,
+  recipesControllers,
+  authControllers,
+  ownRecipesControllers,
+  ingredientsControllers,
+  shoppingListControllers,
 };
