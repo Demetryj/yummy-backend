@@ -9,6 +9,7 @@ const {
 
 const { authCtrl, ownRecipesCtrl } = require("../../controllers");
 
+
 const { schemas } = require("../../models/recipe");
 
 router.post(
@@ -16,6 +17,8 @@ router.post(
   validateBodyWrapper(authValidators.register),
   authCtrl.register
 );
+
+
 
 router.post(
   "/signin",
