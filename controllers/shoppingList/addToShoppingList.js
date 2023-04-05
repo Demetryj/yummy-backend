@@ -1,5 +1,9 @@
+
 const { ctrlWrapper, HttpError } = require('../../helpers');
 const { User, Ingredient } = require('../../models');
+
+
+const { ShoppingList } = require("../../models");
 
 const addToShoppingList = async (req, res) => {
   const { _id } = req.user;
@@ -16,4 +20,4 @@ const addToShoppingList = async (req, res) => {
   res.status(201).json({ result: ingredient });
 };
 
-module.exports = { addToShoppingList: ctrlWrapper(addToShoppingList) };
+module.exports = addToShoppingList;

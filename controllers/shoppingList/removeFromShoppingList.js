@@ -1,5 +1,7 @@
+
 const { ctrlWrapper, HttpError } = require('../../helpers');
 const { User, Ingredient } = require('../../models');
+
 
 const removeFromShoppingList = async (req, res) => {
   const { _id } = req.user;
@@ -22,4 +24,4 @@ const removeFromShoppingList = async (req, res) => {
   res.json({ message: `ingredient ID: ${ingredientId} has been deleted` });
 };
 
-module.exports = { removeFromShoppingList: ctrlWrapper(removeFromShoppingList) };
+module.exports = removeFromShoppingList;
