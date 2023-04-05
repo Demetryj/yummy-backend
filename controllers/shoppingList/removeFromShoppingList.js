@@ -1,4 +1,4 @@
-const { ctrlWrapper, HttpError } = require('../../helpers');
+const {  HttpError } = require('../../helpers');
 const { ShoppingList } = require('../../models');
 
 const removeFromShoppingList = async (req, res) => {
@@ -9,4 +9,4 @@ const removeFromShoppingList = async (req, res) => {
   res.json(result);
 };
 
-module.exports = { removeFromShoppingList: ctrlWrapper(removeFromShoppingList) };
+module.exports = removeFromShoppingList;

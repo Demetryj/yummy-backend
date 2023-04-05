@@ -47,9 +47,11 @@ const recipeSchema = new Schema(
     },
     favorites: [
       {
+
         type: Schema.Types.ObjectId,
         ref: "user",
         required: false,
+
       },
     ],
     likes: {
@@ -65,7 +67,7 @@ const recipeSchema = new Schema(
       required: false,
     },
     ingredients: {
-      type: [Schema.Types.ObjectId],
+      type: [Object],
       required: true,
       ref: "ingredient",
     },

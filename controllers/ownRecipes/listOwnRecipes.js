@@ -1,5 +1,4 @@
 const { Recipe } = require("../../models");
-const { ctrlWrapper } = require("../../helpers");
 
 const listOwnRecipes = async (req, res) => {
   const { _id: owner } = req.user;
@@ -15,6 +14,4 @@ const listOwnRecipes = async (req, res) => {
   res.json({ result });
 };
 
-module.exports = {
-  listOwnRecipes: ctrlWrapper(listOwnRecipes),
-};
+module.exports = listOwnRecipes;

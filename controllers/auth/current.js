@@ -1,5 +1,3 @@
-const { ctrlWrapper } = require("../../helpers");
-
 const current = async (req, res) => {
     const { avatarURL, name } = req.user;
 
@@ -9,6 +7,4 @@ const current = async (req, res) => {
     });
 };
 
-module.exports = {
-    current: ctrlWrapper(current),
-};
+module.exports = current;
