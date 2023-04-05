@@ -7,7 +7,7 @@ const addOwnRecipes = async (req, res) => {
   const { title, description, category, time, ingredients, instructions } =
     req.body;
 
-  if (title) {
+  if (!title) {
     throw HttpError(409, "This title already exist");
   }
   const result = await Recipe.create({
