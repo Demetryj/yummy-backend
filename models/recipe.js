@@ -14,7 +14,6 @@ const recipeSchema = new Schema(
     },
     category: {
       type: String,
-
       enam: getCategoriesList,
       required: true,
     },
@@ -80,10 +79,10 @@ const recipeSchema = new Schema(
 
 const addSchema = Joi.object({
   title: Joi.string().required(),
+  preview: Joi.string(),
   description: Joi.string().required(),
   category: Joi.string().required(),
   time: Joi.string().required(),
-  // ingredients: Joi.objectId().required(),
   ingredients: Joi.array().required(),
   instructions: Joi.string().required(),
 });
