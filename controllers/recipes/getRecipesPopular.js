@@ -3,16 +3,13 @@ const { Recipe } = require('../../models/recipe');
 const { HttpError, ctrlWrapper } = require('../../helpers');
 
 const getRecipesPopular = async (req, res) => {
-  const data = await Recipe.find({});
+  const { page = 1, limit = 4 } = req.query;
+  const skip = (page - 1) * limit;
+  const data = await Recipe.find({ 'favorites.15': { $exists: true } }, '-createdAt -updatedAt', { skip, limit });
   if (!data) {
     throw HttpError(404, 'Not found');
   }
-
-  const result = data.filter((item) => item.favorites.length >= 15);
-
-  const slicedResult = result.slice(4);
-
-  res.json(slicedResult);
+  res.json(data);
 };
 
 module.exports = {
