@@ -10,7 +10,9 @@ const updateSubscription = async (req, res) => {
     { returnDocument: 'after', select: '-password -subscribedToken' }
   );
 
-  res.json({ message: 'Verification successful' });
+  res.json({
+    message: 'You successfully confirmed to SoYummy news subscription!',
+  });
 };
 
 module.exports = updateSubscription;
