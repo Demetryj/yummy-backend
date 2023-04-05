@@ -8,11 +8,17 @@ const router = express.Router();
 
 router.get('/main-page', auth, recipesControllers.getRecipes);
 
+
+router.get('/popular-recipes', auth, ctrl.getRecipesPopular);
+
+
 router.get('/:recipeId', auth, isValidId, recipesControllers.getRecipeById);
+
 
 router.get('/category/list', auth, recipesControllers.getCategoriesList);
 
 router.get('/category/:alias', auth, recipesControllers.getRecipesByCategory);
+
 
 router.get('/all/popular', auth, recipesControllers.getRecipesPopular);
 
