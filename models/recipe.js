@@ -14,13 +14,12 @@ const recipeSchema = new Schema(
     },
     category: {
       type: String,
-
-      enum: getCategoriesList,
+      enam: getCategoriesList,
       required: true,
     },
     area: {
       type: String,
-      required: true,
+      required: false,
     },
     instructions: {
       type: String,
@@ -32,11 +31,11 @@ const recipeSchema = new Schema(
     },
     thumb: {
       type: String,
-      required: true,
+      required: false,
     },
     preview: {
       type: String,
-      required: true,
+      required: false,
     },
     time: {
       type: String,
@@ -44,22 +43,28 @@ const recipeSchema = new Schema(
     },
     popularity: {
       type: Number,
-      required: true,
+      required: false,
     },
     favorites: [
       {
-        type: Array,
+
+        type: Schema.Types.ObjectId,
         ref: "user",
+        required: false,
+
       },
     ],
     likes: {
       type: Array,
+      required: false,
     },
     youtube: {
       type: String,
+      required: false,
     },
     tags: {
       type: [String],
+      required: false,
     },
     ingredients: {
       type: [Object],
@@ -76,10 +81,10 @@ const recipeSchema = new Schema(
 
 const addSchema = Joi.object({
   title: Joi.string().required(),
+  preview: Joi.string(),
   description: Joi.string().required(),
   category: Joi.string().required(),
   time: Joi.string().required(),
-  // ingredients: Joi.objectId().required(),
   ingredients: Joi.array().required(),
   instructions: Joi.string().required(),
 });

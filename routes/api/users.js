@@ -6,7 +6,12 @@ const {
   auth,
   uploadCloud,
 } = require("../../middlewares/index");
+
 const { authControllers, ownRecipesControllers } = require("../../controllers");
+
+const { auth: ctrl } = require("../../controllers");
+const { ownRecipes: ownCtrl } = require("../../controllers");
+
 
 const { schemas } = require("../../models/recipe");
 
@@ -16,11 +21,9 @@ router.post(
   authControllers.register
 );
 
-router.post(
-  "/signin",
-  validateBodyWrapper(authValidators.signin),
-  authControllers.signin
-);
+
+router.post("/signin", validateBodyWrapper(authValidators.signin), ctrl.signin);
+
 
 // POST method for /update to ease front end life: form data works only with post by default
 
@@ -31,14 +34,13 @@ router.post(
   authControllers.update
 );
 
-router.get("/logout", auth, authControllers.logout);
 
-router.get("/current", auth, authControllers.current);
+router.get("/logout", auth, ctrl.logout);
 
-router.get(
-  "/current/subscribe/:subscribedToken",
-  authControllers.updateSubscription
-);
+router.get("/current", auth, ctrl.current);
+
+router.get("/current/subscribe/:subscribedToken", ctrl.updateSubscription);
+
 router.post(
   "/current/subscribe",
   auth,
@@ -57,11 +59,10 @@ router.post(
   ownRecipesControllers.addOwnRecipes
 );
 
-router.delete(
-  "/:userId/own-recipes/:recipeId",
-  ownRecipesControllers.removeOwnRecipes
-);
 
-router.get("/info/:userId", auth, authControllers.getUserInfo);
+router.delete("/:userId/own-recipes/:recipeId", auth, ownCtrl.removeOwnRecipes);
+
+router.get("/info/:userId", auth, ctrl.getUserInfo);
+
 
 module.exports = router;

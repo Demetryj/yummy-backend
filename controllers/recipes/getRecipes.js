@@ -20,13 +20,15 @@ const getRecipes = async (req, res) => {
     }, {});
   };
 
-  const grouped = groupBy(recipes, "category"); // the variable "grouped" is object
 
-  Object.keys(grouped).forEach((key) => {
-    grouped[key] = grouped[key].slice(0, qtty);
+  const result = groupBy(recipes, "category"); // the variable "result" is object
+
+
+  Object.keys(result).forEach((key) => {
+    result[key] = result[key].slice(0, qtty);
   });
 
-  res.status(200).json({ grouped });
+  res.status(200).json({ result });
 };
 
 module.exports = getRecipes;
