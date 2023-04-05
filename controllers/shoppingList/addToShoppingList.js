@@ -3,9 +3,9 @@ const { User, Ingredient } = require('../../models');
 
 const addToShoppingList = async (req, res) => {
   const { _id } = req.user;
-  const { productsId } = req.params;
+  const { ingredientId } = req.params;
 
-  const [ingredient] = await Ingredient.find({ _id: productsId });
+  const [ingredient] = await Ingredient.find({ _id: ingredientId });
   if (!ingredient) throw HttpError(400, 'Bad request');
   const user = await User.findByIdAndUpdate(_id, { new: true });
   if (!user.shoppingList) throw HttpError(404, 'Not Found');
