@@ -1,23 +1,39 @@
-const express = require('express');
+const express = require("express");
 
-const { isValidId, auth } = require('../../middlewares');
+const { isValidId, auth } = require("../../middlewares");
 
-const { recipes: ctrl } = require('../../controllers');
+const { recipesCtrl } = require("../../controllers");
 
 const router = express.Router();
 
-router.get('/main-page', auth, ctrl.getRecipes);
+router.get("/main-page", auth, recipesCtrl.getRecipes);
 
-router.get('/:recipeId', auth, isValidId, ctrl.getRecipeById);
+router.get("/popular-recipes", auth, recipesCtrl.getRecipesPopular);
 
-router.get('/category/list', auth, ctrl.getCategoriesList);
+router.get("/:recipeId", auth, isValidId, recipesCtrl.getRecipeById);
 
-router.get('/category/:alias', auth, ctrl.getRecipesByCategory);
+router.get("/category/list", auth, recipesCtrl.getCategoriesList);
 
-router.get('/all/popular', auth, ctrl.getRecipesPopular);
+router.get("/category/:alias", auth, recipesCtrl.getRecipesByCategory);
 
-router.patch('/:recipeId/favorites', auth, isValidId, ctrl.updateFavorites);
+router.get("/all/popular", auth, recipesCtrl.getRecipesPopular);
 
-router.get('/favorites/list', auth, ctrl.getFavorites);
+// ендпоінт для додавання рецептів до обраних
+router.patch(
+  "/:recipeId/favorites/true",
+  auth,
+  isValidId,
+  recipesCtrl.addFavorites
+);
+// ендпоінт для видалення рецептів авторизованого користувача доданих цим же до обраних
+router.patch(
+  "/:recipeId/favorites/false",
+  auth,
+  isValidId,
+  recipesCtrl.removeFavorites
+);
+
+// ендпоінт для отримання рецептів авторизованого користувача доданих ним же в обрані
+router.get("/favorites/list", auth, recipesCtrl.getFavorites);
 
 module.exports = router;

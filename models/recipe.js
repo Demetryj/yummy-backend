@@ -1,10 +1,12 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 
-const { handleMongooseError } = require("../helpers");
+
+const { handleMongooseError } = require('../helpers');
 const {
   getCategoriesList,
-} = require("../controllers/recipes/getCategoriesList");
+} = require('../controllers/recipes/getCategoriesList');
+
 
 const recipeSchema = new Schema(
   {
@@ -14,13 +16,12 @@ const recipeSchema = new Schema(
     },
     category: {
       type: String,
-
-      enum: getCategoriesList,
+      enam: getCategoriesList,
       required: true,
     },
     area: {
       type: String,
-      required: true,
+      required: false,
     },
     instructions: {
       type: String,
@@ -32,11 +33,11 @@ const recipeSchema = new Schema(
     },
     thumb: {
       type: String,
-      required: true,
+      required: false,
     },
     preview: {
       type: String,
-      required: true,
+      required: false,
     },
     time: {
       type: String,
@@ -44,25 +45,29 @@ const recipeSchema = new Schema(
     },
     popularity: {
       type: Number,
-      required: true,
+      required: false,
     },
     favorites: [
       {
         type: Schema.Types.ObjectId,
-        ref: "user",
+        ref: 'user',
+        required: false,
       },
     ],
     likes: {
       type: Array,
+      required: false,
     },
     youtube: {
       type: String,
+      required: false,
     },
     tags: {
       type: [String],
+      required: false,
     },
     ingredients: {
-      type: Array,
+      type: [Object],
       required: true,
       ref: "ingredient",
     },
@@ -76,10 +81,10 @@ const recipeSchema = new Schema(
 
 const addSchema = Joi.object({
   title: Joi.string().required(),
+  preview: Joi.string(),
   description: Joi.string().required(),
   category: Joi.string().required(),
   time: Joi.string().required(),
-  // ingredients: Joi.objectId().required(),
   ingredients: Joi.array().required(),
   instructions: Joi.string().required(),
 });

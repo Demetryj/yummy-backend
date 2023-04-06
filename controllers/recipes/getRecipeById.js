@@ -2,6 +2,7 @@ const { Recipe } = require("../../models/recipe");
 const mongoose = require("mongoose");
 const { HttpError, ctrlWrapper } = require("../../helpers");
 const ObjectId = mongoose.Types.ObjectId;
+
 const getRecipeById = async (req, res) => {
   const { recipeId } = req.params;
 
@@ -52,6 +53,4 @@ const getRecipeById = async (req, res) => {
   res.json(result);
 };
 
-module.exports = {
-  getRecipeById: ctrlWrapper(getRecipeById),
-};
+module.exports = getRecipeById;

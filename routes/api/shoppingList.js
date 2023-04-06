@@ -1,13 +1,12 @@
-const express = require('express');
+const express = require("express");
 
-const { auth, validateBodyWrapper } = require('../../middlewares');
-const { shoppingList: ctrl } = require('../../controllers');
-const { shoppingListJoiSchema } = require('../../models/shoppingList');
+const { auth } = require("../../middlewares");
+const { shoppingListCtrl } = require("../../controllers");
 
 const router = express.Router();
 
-router.get('/', auth, ctrl.getShoppingList);
-router.post('/', auth, validateBodyWrapper(shoppingListJoiSchema), ctrl.addToShoppingList);
-router.delete('/:id', ctrl.removeFromShoppingList);
+router.get("/", auth, shoppingListCtrl.getShoppingList);
+router.post("/:ingredientId", auth, shoppingListCtrl.addToShoppingList);
+router.delete("/:ingredientId", auth, shoppingListCtrl.removeFromShoppingList);
 
 module.exports = router;

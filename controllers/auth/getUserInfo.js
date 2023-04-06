@@ -1,4 +1,4 @@
-const { HttpError, ctrlWrapper } = require("../../helpers");
+const { HttpError } = require("../../helpers");
 const { Recipe } = require("../../models/recipe");
 const { User } = require("../../models/user");
 
@@ -19,6 +19,4 @@ const getUserInfo = async (req, res) => {
   res.json({ ...result._doc, timeWithUs, favoritesRecipes });
 };
 
-module.exports = {
-    getUserInfo: ctrlWrapper(getUserInfo)
-}
+module.exports = getUserInfo;

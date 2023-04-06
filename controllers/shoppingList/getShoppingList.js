@@ -1,14 +1,13 @@
-const { ctrlWrapper } = require('../../helpers');
-const { ShoppingList } = require('../../models');
+const { HttpError } = require('../../helpers');
+const { User } = require('../../models');
 
 const getShoppingList = async (req, res) => {
   const { _id } = req.user;
-  const { page = 1, limit = 10 } = req.query;
-  const skip = (page - 1) * limit;
+  const { shoppingList } = await User.findById(_id);
 
-  const result = await ShoppingList.find({ owner: _id }, '', { skip, limit: Number(limit) });
+  if (!shoppingList) throw HttpError(404, 'Not Found');
 
-  res.json(result);
+  res.json(shoppingList);
 };
 
-module.exports = { getShoppingList: ctrlWrapper(getShoppingList) };
+module.exports = getShoppingList;

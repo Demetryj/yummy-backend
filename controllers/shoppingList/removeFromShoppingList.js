@@ -1,12 +1,25 @@
-const { ctrlWrapper, HttpError } = require('../../helpers');
-const { ShoppingList } = require('../../models');
+const { HttpError } = require('../../helpers');
+const { User, Ingredient } = require('../../models');
 
 const removeFromShoppingList = async (req, res) => {
-  const { id } = req.params;
-  const result = await ShoppingList.findByIdAndRemove(id);
-  if (!result) throw HttpError(404, 'Not found');
+  const { _id } = req.user;
+  const { ingredientId } = req.params;
 
-  res.json(result);
+  const [ingredient] = await Ingredient.find({ _id: ingredientId });
+
+  const user = await User.findById(_id);
+
+  if (!user.shoppingList) throw HttpError(400, 'Bad request');
+
+  const isIdInshoppingList = user.shoppingList.findIndex(n => n._id.toString() === ingredient._id.toString()) !== -1;
+
+  if (!isIdInshoppingList) throw HttpError(400, 'Bad request');
+
+  const filteredList = user.shoppingList.filter(n => n._id.toString() !== ingredient._id.toString());
+  user.shoppingList = filteredList;
+  await user.save();
+
+  res.json({ message: `ingredient ID: ${ingredientId} has been deleted` });
 };
 
-module.exports = { removeFromShoppingList: ctrlWrapper(removeFromShoppingList) };
+module.exports = removeFromShoppingList;
