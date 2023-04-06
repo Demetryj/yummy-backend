@@ -1,16 +1,16 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { authValidators } = require('../../models/user');
+const { authValidators } = require("../../models/user");
 const {
   validateBodyWrapper,
   auth,
   uploadCloud,
 } = require("../../middlewares/index");
 const { authCtrl, ownRecipesCtrl } = require("../../controllers");
-const { schemas } = require('../../models/recipe');
+const { schemas } = require("../../models/recipe");
 
 router.post(
-  '/register',
+  "/register",
   validateBodyWrapper(authValidators.register),
   authCtrl.register
 );
@@ -32,21 +32,21 @@ router.get("/current", auth, authCtrl.current);
 router.get("/current/subscribe/:subscribedToken", authCtrl.updateSubscription);
 
 router.post(
-  '/current/subscribe',
+  "/current/subscribe",
   auth,
   validateBodyWrapper(authValidators.subscribe),
   authCtrl.sendSubscriptionEmail
 );
 
-router.get('/verify/:verificationToken', authCtrl.verifyEmail);
+router.get("/verify/:verificationToken", authCtrl.verifyEmail);
 
-router.post('/verify', authCtrl.resendEmail);
+router.post("/verify", authCtrl.resendEmail);
 
 // own-recipes
 router.get("/:userId/own-recipes", auth, ownRecipesCtrl.listOwnRecipes);
 
 router.post(
-  '/:userId/own-recipes',
+  "/:userId/own-recipes",
   auth,
   validateBodyWrapper(schemas.addSchema),
   ownRecipesCtrl.addOwnRecipes
