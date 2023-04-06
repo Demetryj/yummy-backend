@@ -1,5 +1,5 @@
 const { Recipe } = require("../../models/recipe");
-const { getOptionsAggArr } = require("../../constants");
+const { aggregateOpts } = require("../../constants");
 
 const getRecipesByQueryParams = async (req, res) => {
   const { keyword = "", page = 1, limit = 8 } = req.query;
@@ -7,7 +7,7 @@ const getRecipesByQueryParams = async (req, res) => {
   const skip = (curPage - 1) * +limit;
 
   const result = await Recipe.aggregate(
-    getOptionsAggArr({
+    aggregateOpts.getOptionsAggArr1({
       $match: { title: { $regex: "^" + keyword, $options: "i" } },
     })
   ).facet({

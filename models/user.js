@@ -1,6 +1,6 @@
-const Joi = require('joi');
-const { Schema, model } = require('mongoose');
-const { handleMongooseError } = require('../helpers');
+const Joi = require("joi");
+const { Schema, model } = require("mongoose");
+const { handleMongooseError } = require("../helpers");
 
 // eslint-disable-next-line no-useless-escape
 const emailRegexp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -9,24 +9,22 @@ const userSchema = new Schema(
   {
     name: {
       type: String,
-      required: [true, 'Name is required'],
+      required: [true, "Name is required"],
     },
     email: {
       type: String,
-      required: [true, 'Email is required'],
+      required: [true, "Email is required"],
       match: emailRegexp,
       unique: true,
     },
     password: {
       type: String,
-      required: [true, 'Password is required'],
+      required: [true, "Password is required"],
     },
-    favorites: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'recipe',
-      },
-    ],
+    favorites: {
+      type: [Schema.Types.ObjectId],
+      ref: "recipe",
+    },
     token: {
       type: String,
       default: null,
@@ -42,13 +40,13 @@ const userSchema = new Schema(
     subscribedToken: {
       type: String,
       required: false,
-      default: '',
+      default: "",
     },
   },
   { versionKey: false, timestamps: true }
 );
 
-userSchema.post('save', handleMongooseError);
+userSchema.post("save", handleMongooseError);
 
 const register = Joi.object({
   name: Joi.string().required(),
@@ -74,7 +72,7 @@ const authValidators = {
   subscribe,
 };
 
-const User = model('user', userSchema);
+const User = model("user", userSchema);
 
 module.exports = {
   User,

@@ -59,6 +59,7 @@ router.post(
 
 router.delete(
   "/:userId/own-recipes/:recipeId",
+  auth,
   ownRecipesControllers.removeOwnRecipes
 );
 

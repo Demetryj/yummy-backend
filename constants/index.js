@@ -1,3 +1,3 @@
-const getOptionsAggArr = require("./optionsAggregateArr");
+const aggregateOpts = require("./optionsAggregateArr");
 
-module.exports = { getOptionsAggArr };
+module.exports = { aggregateOpts };

@@ -1,4 +1,4 @@
-const getOptionsAggArr = (optObj) => [
+const getOptionsAggArr1 = (optObj) => [
   optObj,
   {
     $lookup: {
@@ -35,4 +35,58 @@ const getOptionsAggArr = (optObj) => [
     $unset: ["ingr_info", "ingredients._id", "createdAt", "updatedAt"],
   },
 ];
-module.exports = getOptionsAggArr;
+const getOptionsAggArr2 = (ingredient, result1) => [
+  {
+    $match: {
+      ttl: ingredient,
+    },
+  },
+
+  {
+    $lookup: {
+      from: "recipes",
+      localField: "_id",
+      foreignField: "ingredients.id",
+      pipeline: [
+        {
+          $project: {
+            recipe: {
+              _id: "$_id",
+              title: "$title",
+              thumb: "$thumb",
+              ingredients: {
+                $map: {
+                  input: "$ingredients",
+                  in: {
+                    $mergeObjects: [
+                      "$$this",
+                      {
+                        $arrayElemAt: [
+                          result1,
+                          {
+                            $indexOfArray: [result1, "$$this.id"],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          },
+        },
+        {
+          $replaceRoot: {
+            newRoot: "$recipe",
+          },
+        },
+      ],
+
+      as: "recipe",
+    },
+  },
+  { $unwind: "$recipe" },
+  { $unset: ["_id", "t", "recipe.ingredients.t", "recipe.ingredients._id"] },
+];
+const aggregateOpts = { getOptionsAggArr1, getOptionsAggArr2 };
+module.exports = aggregateOpts;
