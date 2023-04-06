@@ -46,12 +46,10 @@ const recipeSchema = new Schema(
       type: Number,
       required: true,
     },
-    favorites: [
-      {
-        type: Array,
-        ref: "user",
-      },
-    ],
+    favorites: {
+      type: [Schema.Types.ObjectId],
+      ref: "user",
+    },
     likes: {
       type: Array,
     },
@@ -62,7 +60,7 @@ const recipeSchema = new Schema(
       type: [String],
     },
     ingredients: {
-      type: [Object],
+      type: [{ _id: Schema.Types.ObjectId, measure: String }],
       required: true,
       ref: "ingredient",
     },
