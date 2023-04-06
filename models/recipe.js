@@ -1,10 +1,12 @@
-const { Schema, model } = require('mongoose');
-const Joi = require('joi');
+const { Schema, model } = require("mongoose");
+const Joi = require("joi");
+
 
 const { handleMongooseError } = require('../helpers');
 const {
   getCategoriesList,
 } = require('../controllers/recipes/getCategoriesList');
+
 
 const recipeSchema = new Schema(
   {
@@ -67,11 +69,11 @@ const recipeSchema = new Schema(
     ingredients: {
       type: [Object],
       required: true,
-      ref: 'ingredient',
+      ref: "ingredient",
     },
     owner: {
       type: Schema.Types.ObjectId,
-      ref: 'user',
+      ref: "user",
     },
   },
   { versionKey: false, timestamps: true }
@@ -91,9 +93,9 @@ const schemas = {
   addSchema,
 };
 
-recipeSchema.post('save', handleMongooseError);
+recipeSchema.post("save", handleMongooseError);
 
-const Recipe = model('recipe', recipeSchema);
+const Recipe = model("recipe", recipeSchema);
 
 module.exports = {
   Recipe,
