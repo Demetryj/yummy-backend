@@ -1,56 +1,13 @@
-const mongoose = require("mongoose");
-
 const { Recipe } = require("../../models/recipe");
-const { HttpError } = require("../../helpers");
-
-const ObjectId = mongoose.Types.ObjectId;
+const mongoose = require("mongoose");
+const { getOptionsAggArr } = require("../../constants");
 
 const getRecipeById = async (req, res) => {
   const { recipeId } = req.params;
 
-  const result = await Recipe.aggregate([
-    {
-      $match: {
-        _id: ObjectId(recipeId),
-      },
-    },
-    {
-      $lookup: {
-        from: "ingredients",
-        localField: "ingredients.id",
-        foreignField: "_id",
-        as: "ingr_nfo",
-      },
-    },
-    {
-      $set: {
-        ingredients: {
-          $map: {
-            input: "$ingredients",
-            in: {
-              $mergeObjects: [
-                "$$this",
-                {
-                  $arrayElemAt: [
-                    "$ingr_nfo",
-                    {
-                      $indexOfArray: ["$ingr_nfo._id", "$$this.id"],
-                    },
-                  ],
-                },
-              ],
-            },
-          },
-        },
-      },
-    },
-    {
-      $unset: ["ingr_nfo", "ingredients.id"],
-    },
-  ]);
-  if (!result) {
-    throw HttpError(404, "Not found");
-  }
+  const result = await Recipe.aggregate(
+    getOptionsAggArr({ $match: { _id: mongoose.Types.ObjectId(recipeId) } })
+  );
 
   res.json(result);
 };

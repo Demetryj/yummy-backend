@@ -1,49 +1,71 @@
-const { HttpError } = require("../../helpers");
 const { Ingredient } = require("../../models/ingredient");
-const { Recipe } = require("../../models/recipe");
 
 const getRecipesByIngredient = async (req, res) => {
-  const { page = "3", limit = "2" } = req.query;
+  const result1 = await Ingredient.find({});
+  const { page = 1, limit = 8 } = req.query;
+  const curPage = +page;
   const { ingredient } = req.params;
-
-  const skip = (+page - 1) * +limit;
-
-  const result1 = await Ingredient.find({ ttl: ingredient });
-  if (result1.length === 0 || !result1) {
-    throw HttpError(404);
-  }
-
-  const result = await Recipe.aggregate([
+  const skip = (curPage - 1) * +limit;
+  const optionsArr = [
     {
       $match: {
-        ingredients: {
-          $elemMatch: {
-            id: result1[0]._id,
-          },
-        },
+        ttl: ingredient,
       },
     },
-
     {
-      $project: {
-        recipes: {
-          title: "$title",
-          thumb: "$thumb",
-          ingredients: "$ingredients",
-        },
+      $lookup: {
+        from: "recipes",
+        localField: "_id",
+        foreignField: "ingredients.id",
+        pipeline: [
+          {
+            $project: {
+              recipe: {
+                _id: "$_id",
+                title: "$title",
+                thumb: "$thumb",
+                ingredients: {
+                  $map: {
+                    input: "$ingredients",
+                    in: {
+                      $mergeObjects: [
+                        "$$this",
+                        {
+                          $arrayElemAt: [
+                            result1,
+                            {
+                              $indexOfArray: [result1, "$$this.id"],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            $replaceRoot: {
+              newRoot: "$recipe",
+            },
+          },
+        ],
+
+        as: "recipe",
       },
     },
-  ]).facet({
-    metaData: [{ $count: "total" }, { $addFields: { page } }],
-    data: [{ $skip: +skip }, { $limit: +limit }],
-  });
+    { $unwind: "$recipe" },
+    { $unset: ["_id", "recipe.ingredients.t", "recipe.ingredients._id"] },
+  ];
 
-  if (result[0].data.length === 0) {
-    throw HttpError(404);
-  }
+  const result = await Ingredient.aggregate(optionsArr)
+    .facet({
+      metaData: [{ $count: "total" }, { $addFields: { curPage } }],
+      recipeData: [{ $skip: +skip }, { $limit: +limit }],
+    })
+    .unwind("metaData");
+
   res.json(result);
 };
 module.exports = getRecipesByIngredient;
-
-// .limit(Number(limit))
-// .skip(Number(skip))
