@@ -1,5 +1,7 @@
 const { User } = require('../../models/user');
 
+const { BASE_URL } = process.env;
+
 const updateSubscription = async (req, res) => {
   const { subscribedToken } = req.params;
   const user = await User.findOne({ subscribedToken });
@@ -10,7 +12,9 @@ const updateSubscription = async (req, res) => {
     { returnDocument: 'after', select: '-password -subscribedToken' }
   );
 
-  res.json({
+  const frontendLink = `${BASE_URL}/yummy-frontend//current/subscribe/${subscribedToken}?message=You%20successfully%20confirmed%20to%20SoYummy%20news%20subscription!&target=_self`;
+
+  res.redirect(frontendLink).json({
     message: 'You successfully confirmed to SoYummy news subscription!',
   });
 };
