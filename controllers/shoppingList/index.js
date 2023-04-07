@@ -1,9 +1,11 @@
-const { getShoppingList } = require('./getShoppingList');
-const { addToShoppingList } = require('./addToShoppingList');
-const { removeFromShoppingList } = require('./removeFromShoppingList');
+const getShoppingList = require('./getShoppingList');
+const addToShoppingList = require('./addToShoppingList');
+const removeFromShoppingList = require('./removeFromShoppingList');
+const { ctrlWrapper } = require('../../helpers');
 
-module.exports = {
-  getShoppingList,
-  addToShoppingList,
-  removeFromShoppingList,
+const shoppingList = {
+  getShoppingList: ctrlWrapper(getShoppingList),
+  addToShoppingList: ctrlWrapper(addToShoppingList),
+  removeFromShoppingList: ctrlWrapper(removeFromShoppingList),
 };
+module.exports = shoppingList;

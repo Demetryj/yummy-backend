@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const { ctrlWrapper } = require("../../helpers");
-const { recipes: ctrl } = require("../../controllers");
+const { recipesCtrl, ingredientsCtrl } = require("../../controllers");
+const { auth } = require("../../middlewares");
 
-router.get("/:category", ctrl.getRecipesByQueryParams);
+router.get("/", auth, recipesCtrl.getRecipesByQueryParams);
+router.get("/:ingredient", auth, ingredientsCtrl.getRecipesByIngredient);
 
 module.exports = router;

@@ -1,5 +1,5 @@
 const { Recipe } = require("../../models/recipe");
-const { HttpError, ctrlWrapper } = require("../../helpers");
+const { HttpError } = require("../../helpers");
 
 const getRecipesByCategory = async (req, res) => {
   const { page = 1, limit = 8 } = req.query;
@@ -20,4 +20,4 @@ const getRecipesByCategory = async (req, res) => {
   }
   res.json(result);
 };
-module.exports = { getRecipesByCategory: ctrlWrapper(getRecipesByCategory) };
+module.exports = getRecipesByCategory;

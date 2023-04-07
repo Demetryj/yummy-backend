@@ -1,17 +1,19 @@
-const { Recipe } = require('../../models/recipe');
+const { Recipe } = require("../../models/recipe");
 
-const { HttpError, ctrlWrapper } = require('../../helpers');
+const { HttpError } = require("../../helpers");
 
 const getRecipesPopular = async (req, res) => {
-  const data = await Recipe.find();
-  if (!data) {
-    throw HttpError(404, 'Not found');
+  const { page = 1, limit = 4 } = req.query;
+  const skip = (page - 1) * limit;
+  const result = await Recipe.find(
+    { "favorites.15": { $exists: true } },
+    "-createdAt -updatedAt",
+    { skip, limit }
+  );
+  if (!result) {
+    throw HttpError(404, "Not found");
   }
-
-  const result = data.filter((item) => item.favorites.length >= 15);
   res.json(result);
 };
 
-module.exports = {
-  getRecipesPopular: ctrlWrapper(getRecipesPopular),
-};
+module.exports = getRecipesPopular;

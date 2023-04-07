@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const uniqid = require('uniqid');
 const { User } = require('../../models/user');
-const { HttpError, ctrlWrapper, sendEmail } = require('../../helpers');
+const { HttpError, sendEmail } = require('../../helpers');
 const confirmationEmail = require('../../data/confirmationEmail');
 
 const { BASE_URL } = process.env;
@@ -9,10 +9,7 @@ const { BASE_URL } = process.env;
 const register = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-
-  if (user) {
-    throw HttpError(409, 'Email is already in use');
-  }
+  if (user) throw HttpError(409, 'Email is already in use');
 
   const hashPassword = await bcrypt.hash(password, 10);
   const verificationToken = uniqid();
@@ -38,6 +35,5 @@ const register = async (req, res) => {
   });
 };
 
-module.exports = {
-  register: ctrlWrapper(register),
-};
+module.exports = register;
+
