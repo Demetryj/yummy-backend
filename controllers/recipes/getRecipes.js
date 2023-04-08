@@ -26,7 +26,7 @@ const getRecipes = async (req, res) => {
     result[key] = result[key].slice(0, qtty);
   });
 
-  res.status(200).json({ result });
+  res.json( result );
 };
 
 module.exports = { getRecipes };
