@@ -31,10 +31,10 @@ const userSchema = new Schema(
     //     ref: 'recipe',
     //   },
     // ],
-    // shoppingList: {
-    //   type: Array,
-    //   default: [],
-    // },
+    shoppingList: {
+      type: Array,
+      default: [],
+    },
     token: {
       type: String,
       default: null,
