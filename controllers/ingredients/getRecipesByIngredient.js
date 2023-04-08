@@ -1,49 +1,22 @@
-const { HttpError } = require("../../helpers");
+const { aggregateOpts } = require("../../constants");
 const { Ingredient } = require("../../models/ingredient");
-const { Recipe } = require("../../models/recipe");
 
 const getRecipesByIngredient = async (req, res) => {
-  const { page = "3", limit = "2" } = req.query;
+  const result1 = await Ingredient.find({});
+  const { page = 1, limit = 8 } = req.query;
+  const curPage = +page;
   const { ingredient } = req.params;
+  const skip = (curPage - 1) * +limit;
 
-  const skip = (+page - 1) * +limit;
+  const result = await Ingredient.aggregate(
+    aggregateOpts.getOptionsAggArr2(ingredient, result1)
+  )
+    .facet({
+      metaData: [{ $count: "total" }, { $addFields: { curPage } }],
+      recipeData: [{ $skip: +skip }, { $limit: +limit }],
+    })
+    .unwind("metaData");
 
-  const result1 = await Ingredient.find({ ttl: ingredient });
-  if (result1.length === 0 || !result1) {
-    throw HttpError(404);
-  }
-
-  const result = await Recipe.aggregate([
-    {
-      $match: {
-        ingredients: {
-          $elemMatch: {
-            id: result1[0]._id,
-          },
-        },
-      },
-    },
-
-    {
-      $project: {
-        recipes: {
-          title: "$title",
-          thumb: "$thumb",
-          ingredients: "$ingredients",
-        },
-      },
-    },
-  ]).facet({
-    metaData: [{ $count: "total" }, { $addFields: { page } }],
-    data: [{ $skip: +skip }, { $limit: +limit }],
-  });
-
-  if (result[0].data.length === 0) {
-    throw HttpError(404);
-  }
   res.json(result);
 };
 module.exports = getRecipesByIngredient;
-
-// .limit(Number(limit))
-// .skip(Number(skip))
