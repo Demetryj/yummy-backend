@@ -8,7 +8,7 @@ const { SECRET_KEY } = process.env;
 const signin = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  const errorMsg = "Email or password invalid";
+  const errorMsg = "Email or password is invalid";
 
   if (!user) {
     throw HttpError(401, errorMsg);
