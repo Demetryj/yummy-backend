@@ -1,6 +1,6 @@
 const { Recipe } = require("../../models/recipe");
 
-//TODO: the variables "categoriesPopular" and "qtty" are planned to come from the frontend
+// TODO: the variables "categoriesPopular" and "qtty" are planned to come from the frontend
 const categoriesPopular = ["Breakfast", "Miscellaneous", "Vegan", "Dessert"];
 const qtty = 4;
 
@@ -26,7 +26,8 @@ const getRecipes = async (req, res) => {
     result[key] = result[key].slice(0, qtty);
   });
 
-  res.json( result );
-};
 
-module.exports = { getRecipes };
+  res.json( result );
+
+
+module.exports = getRecipes;

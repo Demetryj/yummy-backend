@@ -1,9 +1,10 @@
-const { addOwnRecipes } = require("./addOwnRecipes");
-const { listOwnRecipes } = require("./listOwnRecipes");
-const { removeOwnRecipes } = require("./removeOwnRecipes");
+const addOwnRecipes = require("./addOwnRecipes");
+const listOwnRecipes = require("./listOwnRecipes");
+const removeOwnRecipes = require("./removeOwnRecipes");
 
-module.exports = {
+const ownRecipes = {
   addOwnRecipes,
   listOwnRecipes,
   removeOwnRecipes,
 };
+module.exports = ownRecipes;

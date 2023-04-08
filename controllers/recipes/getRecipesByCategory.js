@@ -1,24 +1,21 @@
+const { aggregateOpts } = require("../../constants");
 const { Recipe } = require("../../models/recipe");
-const { HttpError, ctrlWrapper } = require("../../helpers");
 
 const getRecipesByCategory = async (req, res) => {
-  const { page = 1, limit = 8 } = req.query;
   const { alias } = req.params;
-  console.log(req.params);
+  const { page = 1, limit = 8 } = req.query;
+  const curPage = +page;
+  const skip = (curPage - 1) * +limit;
 
-  const skip = (page - 1) * limit;
+  const result = await Recipe.aggregate(
+    aggregateOpts.getOptionsAggArr1({
+      $match: { category: alias },
+    })
+  ).facet({
+    metaData: [{ $count: "total" }, { $addFields: { curPage } }],
+    recipeData: [{ $skip: +skip }, { $limit: +limit }],
+  });
 
-  const result = await Recipe.find(
-    { category: alias },
-    "-createdAt -updatedAt",
-    {
-      skip,
-      limit,
-    }
-  ).where("rangeBefore");
-  if (result.length === 0) {
-    throw HttpError(404, "Not found");
-  }
   res.json(result);
 };
-module.exports = { getRecipesByCategory: ctrlWrapper(getRecipesByCategory) };
+module.exports = getRecipesByCategory;

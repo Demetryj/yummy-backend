@@ -1,17 +1,21 @@
 const { Recipe } = require("../../models");
-const { HttpError, ctrlWrapper } = require("../../helpers");
 
 const addOwnRecipes = async (req, res) => {
   const { _id } = req.user;
 
-  let { title, description, category, time, ingredients, instructions } =
-    req.body;
+  const {
+    title,
+    preview,
+    description,
+    category,
+    time,
+    ingredients,
+    instructions,
+  } = req.body;
 
-  if (title) {
-    throw HttpError(409, "This title already exist");
-  }
   const result = await Recipe.create({
     title,
+    preview,
     description,
     category,
     time,
@@ -23,6 +27,4 @@ const addOwnRecipes = async (req, res) => {
   res.status(201).json({ result });
 };
 
-module.exports = {
-  addOwnRecipes: ctrlWrapper(addOwnRecipes),
-};
+module.exports = addOwnRecipes;

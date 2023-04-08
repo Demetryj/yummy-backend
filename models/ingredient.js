@@ -1,4 +1,6 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
+const { handleMongooseError } = require('../helpers');
+
 const ingredientSchema = Schema({
   ttl: {
     type: String,
@@ -10,14 +12,16 @@ const ingredientSchema = Schema({
   },
   t: {
     type: String,
-    default: "",
+    default: '',
   },
   thb: {
     type: String,
     required: true,
   },
 });
-const Ingredient = model("ingredient", ingredientSchema);
+
+ingredientSchema.post('save', handleMongooseError);
+const Ingredient = model('ingredient', ingredientSchema);
 
 module.exports = {
   Ingredient,
