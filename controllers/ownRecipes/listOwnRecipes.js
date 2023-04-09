@@ -1,4 +1,5 @@
 const { Recipe } = require("../../models");
+const { HttpError } = require("../../helpers");
 
 const listOwnRecipes = async (req, res) => {
   const { _id: owner } = req.user;
@@ -10,6 +11,10 @@ const listOwnRecipes = async (req, res) => {
     skip,
     limit: Number(limit),
   }).populate("owner", "name email");
+
+  if (!result) {
+    throw HttpError(404, `No recipe was found`);
+  }
 
   res.json({ result });
 };
