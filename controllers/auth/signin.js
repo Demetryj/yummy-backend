@@ -28,6 +28,7 @@ const signin = async (req, res) => {
 
   res.json({
     token,
+    id: user._id,
   });
 };
 
