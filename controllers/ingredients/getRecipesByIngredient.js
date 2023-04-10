@@ -9,7 +9,14 @@ const getRecipesByIngredient = async (req, res) => {
   const skip = (curPage - 1) * +limit;
 
   const result = await Ingredient.aggregate(
-    aggregateOpts.getOptionsAggArr2(ingredient, result1)
+    aggregateOpts.getOptionsAggArr2(
+      {
+        $match: {
+          ttl: { $regex: "^" + ingredient, $options: "i" },
+        },
+      },
+      result1
+    )
   )
     .facet({
       metaData: [{ $count: "total" }, { $addFields: { curPage } }],

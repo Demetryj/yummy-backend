@@ -35,13 +35,8 @@ const getOptionsAggArr1 = (optObj) => [
     $unset: ["ingr_info", "ingredients._id", "createdAt", "updatedAt"],
   },
 ];
-const getOptionsAggArr2 = (ingredient, result1) => [
-  {
-    $match: {
-      ttl: ingredient,
-    },
-  },
-
+const getOptionsAggArr2 = (optObj, result1) => [
+  optObj,
   {
     $lookup: {
       from: "recipes",
