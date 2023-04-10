@@ -20,7 +20,7 @@ const getOptionsAggArr1 = (optObj) => [
                 $arrayElemAt: [
                   "$ingr_info",
                   {
-                    $indexOfArray: ["$ingr_info", "$$this.id"],
+                    $indexOfArray: ["$ingr_info._id", "$$this.id"],
                   },
                 ],
               },
