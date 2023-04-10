@@ -19,7 +19,10 @@ const removeFromShoppingList = async (req, res) => {
   user.shoppingList = filteredList;
   await user.save();
 
-  res.json({ message: `ingredient ID: ${ingredientId} has been deleted` });
+  res.json({
+    id: ingredient._id,
+    message: `ingredient has been deleted`,
+  });
 };
 
 module.exports = removeFromShoppingList;

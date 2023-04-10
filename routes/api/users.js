@@ -6,10 +6,7 @@ const {
   auth,
   uploadCloud,
 } = require("../../middlewares/index");
-
 const { authCtrl, ownRecipesCtrl } = require("../../controllers");
-
-
 const { schemas } = require("../../models/recipe");
 
 router.post(
@@ -17,8 +14,6 @@ router.post(
   validateBodyWrapper(authValidators.register),
   authCtrl.register
 );
-
-
 
 router.post(
   "/signin",
@@ -43,8 +38,11 @@ router.post(
   authCtrl.sendSubscriptionEmail
 );
 
-// own-recipes
+router.get("/verify/:verificationToken", authCtrl.verifyEmail);
 
+router.post("/verify", authCtrl.resendEmail);
+
+// own-recipes
 router.get("/:userId/own-recipes", auth, ownRecipesCtrl.listOwnRecipes);
 
 router.post(

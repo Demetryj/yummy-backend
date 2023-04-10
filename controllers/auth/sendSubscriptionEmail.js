@@ -23,6 +23,7 @@ const sendSubscriptionEmail = async (req, res) => {
   await User.findByIdAndUpdate(_id, { subscribedToken });
 
   const subscriptionLink = `${BASE_URL}/api/users/current/subscribe/${subscribedToken}`;
+
   const verifySubscription = {
     to: email,
     subject: 'Confirmation to SoYummy news subscription',
