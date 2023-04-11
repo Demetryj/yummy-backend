@@ -1,28 +1,41 @@
 const { HttpError } = require('../../helpers');
-const { User, Ingredient } = require('../../models');
+const { User } = require('../../models');
 
 const removeFromShoppingList = async (req, res) => {
-  const { _id } = req.user;
-  const { ingredientId } = req.params;
+  const user = req.user;
+  const { id: productId } = req.params;
+  const { measure } = req.query;
 
-  const [ingredient] = await Ingredient.find({ _id: ingredientId });
-
-  const user = await User.findById(_id);
-
-  if (!user.shoppingList) throw HttpError(400, 'Bad request');
-
-  const isIdInshoppingList = user.shoppingList.findIndex(n => n._id.toString() === ingredient._id.toString()) !== -1;
-
-  if (!isIdInshoppingList) throw HttpError(400, 'Bad request');
-
-  const filteredList = user.shoppingList.filter(n => n._id.toString() !== ingredient._id.toString());
-  user.shoppingList = filteredList;
-  await user.save();
-
-  res.json({
-    id: ingredient._id,
-    message: `ingredient has been deleted`,
+  const productIndex = user.shoppingList.findIndex(item => {
+    return String(item.productId) === String(productId) && item.measure === measure;
   });
+
+  if (productIndex === -1) {
+    throw HttpError(404, `No product ${productId} in shopping list`);
+  }
+
+  const deletedId = user.shoppingList.splice(productIndex, 1);
+
+  const result = await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      shoppingList: user.shoppingList,
+    },
+    { new: true }
+  )
+    .select('shoppingList')
+    .populate({
+      path: 'shoppingList.productId',
+      ref: 'ingredients',
+    });
+  const { shoppingList } = result.toObject();
+
+  shoppingList.forEach(ingr => {
+    ingr.title = ingr.productId.ttl;
+    ingr.thumb = ingr.productId.thb;
+    ingr.productId = ingr.productId._id;
+  });
+  res.json(deletedId);
 };
 
 module.exports = removeFromShoppingList;

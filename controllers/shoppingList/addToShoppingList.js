@@ -2,18 +2,39 @@ const { HttpError } = require('../../helpers');
 const { User, Ingredient } = require('../../models');
 
 const addToShoppingList = async (req, res) => {
-  const { _id } = req.user;
-  const { ingredientId } = req.params;
+  const user = req.user;
 
-  const [ingredient] = await Ingredient.find({ _id: ingredientId });
-  if (!ingredient) throw HttpError(400, 'Bad request');
-  const user = await User.findByIdAndUpdate(_id, { new: true });
-  if (!user.shoppingList) throw HttpError(404, 'Not Found');
+  //TODO: вписывать вручную данные
+  const { id: productId } = req.params;
+  const { measure } = req.query;
 
-  user.shoppingList.push(ingredient);
-  await user.save();
+  const ingredient = await Ingredient.findById(productId);
 
-  res.status(201).json({ result: ingredient });
+  if (!ingredient) {
+    throw HttpError(404, 'No such ingredient');
+  }
+  const result = await User.findByIdAndUpdate(
+    user._id,
+    {
+      $push: { shoppingList: { productId, measure } },
+    },
+    { new: true }
+  )
+    .select('shoppingList')
+    .populate({
+      path: 'shoppingList.productId',
+      ref: 'ingredients',
+    });
+
+  const { shoppingList } = result.toObject();
+
+  shoppingList.forEach(ingr => {
+    ingr.title = ingr.productId.ttl;
+    ingr.thumb = ingr.productId.thb;
+    ingr.productId = ingr.productId._id;
+  });
+
+  res.status(201).json(shoppingList);
 };
 
 module.exports = addToShoppingList;
