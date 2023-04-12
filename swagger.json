@@ -1,0 +1,2642 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.0",
+    "title": "SoYummy API docs",
+    "description": "API documentation for GoIT group-project 'SoYummy'. [Backend github repository](https://github.com/Demetryj/yummy-backend)",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://soyummy-pg-2.onrender.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Authorization and own-recipes endpoints"
+    },
+    {
+      "name": "Recipes",
+      "description": "Recipes endpoints"
+    },
+    {
+      "name": "Ingredients",
+      "description": "Ingredients endpoints"
+    },
+    {
+      "name": "Search",
+      "description": "Search endpoints"
+    },
+    {
+      "name": "Shopping-list",
+      "description": "Shopping-list endpoints"
+    }
+  ],
+  "paths": {
+    "/api/users/register": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "User registration",
+        "parameters": [],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Email is already in use",
+            "content": {}
+          }
+        }
+      }
+    },
+    "api/users/verify/:verificationToken": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Verification user`s email",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "description": "Verification token",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificationEmailResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "api/users/verify": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Resend verification email",
+        "parameters": [],
+        "requestBody": {
+          "description": "User`s email",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResendVerifyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResendVerifyResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User with such email was not found",
+            "content": {}
+          },
+          "409": {
+            "description": "Verification has already been passed",
+            "content": {}
+          }
+        }
+      }
+    },
+    "api/users/signin": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "User authentication",
+        "parameters": [],
+        "requestBody": {
+          "description": "Authentication's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Email or password is invalid",
+            "content": {}
+          }
+        }
+      }
+    },
+    "api/users/current": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Current user",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "description": "User`s id",
+                      "example": "643420af2ca084c9050089d7"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "User`s name",
+                      "example": "Username"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/users/current/subscribe/:subscribedToken": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "User`s subscription",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "description": "Subscription token",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/users/current/subscribe": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Send subscription email",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "User`s email",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendSubscriptionEmailRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendSubscriptionEmailResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "You are already subscribed!",
+            "content": {}
+          }
+        }
+      }
+    },
+    "api/users/update": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Update user's info (name, avatar)",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "Update user's info (name, avatar)",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDataRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUserDataResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/users/:userId/own-recipes": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "User`s own recipes",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "description": "User`s id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": true,
+            "description": "Limit",
+            "schema": {
+              "type": "string",
+              "example": "10"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": true,
+            "description": "Page",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OwnRecipesResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No recipe was found",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": ["Users"],
+        "summary": "Adding a user's own recipe",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "description": "User`s id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "User`s email",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddOwnRecipesRequest"
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddOwnRecipesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/users/own-recipes/:recipeId": {
+      "delete": {
+        "tags": ["Users"],
+        "summary": "User`s own recipes",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recipeId",
+            "required": true,
+            "description": "Recip`s id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Remove recipes",
+                      "example": "Recipe successfully deleted"
+                    }
+                  }
+                },
+                "404": {
+                  "description": "Recipe with id = recipeId not found",
+                  "content": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/users/logout": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Logout",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Logged out",
+                      "example": "Logout success"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/recipes/main-page": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Recipes by categories",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipesByCategoriesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/recipes/popular-recipes": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Popular recipes",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": true,
+            "description": "Limit",
+            "schema": {
+              "type": "string",
+              "example": "4"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": true,
+            "description": "Page",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PopularRecipesResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "api/recipes/:recipeId": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Recipes by id",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recipeId",
+            "required": true,
+            "description": "Recipe`s id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipesByIdResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "api/recipes/category/list": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Category list of recipes",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/recipes/category/:alias": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Recipes by category",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "alias",
+            "required": true,
+            "description": "Recipe`s alias",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": true,
+            "description": "Limit",
+            "schema": {
+              "type": "string",
+              "example": "8"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": true,
+            "description": "Page",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipesByCategoryResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "api/recipes/:recipeId/favorites/true": {},
+    "api/recipes/:recipeId/favorites/false": {},
+    "api/recipes/favorites/list": {},
+    "api/recipes/ingredients/list": {
+      "get": {
+        "tags": ["Ingredients"],
+        "summary": "Ingredients list",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IngredientsListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/search": {
+      "get": {
+        "tags": ["Search"],
+        "summary": "Search recipes by query (title, category)",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "keyword",
+            "required": true,
+            "description": "Keyword",
+            "schema": {
+              "type": "string",
+              "example": "Beef"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": true,
+            "description": "Limit",
+            "schema": {
+              "type": "string",
+              "example": "8"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": true,
+            "description": "Page",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipesByQueryResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/search/:ingredient": {
+      "get": {
+        "tags": ["Search"],
+        "summary": "Search recipes by ingredient",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ingredient",
+            "required": true,
+            "description": "Ingredient",
+            "schema": {
+              "type": "string",
+              "example": "Beef"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": true,
+            "description": "Limit",
+            "schema": {
+              "type": "string",
+              "example": "8"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": true,
+            "description": "Page",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipesByIngredientResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/shopping-list": {
+      "get": {
+        "tags": ["Shopping-list"],
+        "summary": "Shopping list",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShoppingListResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/shopping-list/:id": {
+      "post": {
+        "tags": ["Shopping-list"],
+        "summary": "Add a recipe  to the shopping-list",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Ingredient`s id",
+            "schema": {
+              "type": "string",
+              "example": "640c2dd963a319ea671e37c6"
+            }
+          },
+          {
+            "in": "query",
+            "name": "measure",
+            "required": true,
+            "description": "Measure",
+            "schema": {
+              "type": "string",
+              "example": "3 tsp"
+            }
+          }
+        ],
+
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddIngredientsToShopListResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such ingredient",
+            "content": {}
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Shopping-list"],
+        "summary": "Removing an ingredient from the shopping-list ",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Ingredient`s id",
+            "schema": {
+              "type": "string",
+              "example": "640c2dd963a319ea671e37c6"
+            }
+          },
+          {
+            "in": "query",
+            "name": "measure",
+            "required": true,
+            "description": "Measure",
+            "schema": {
+              "type": "string",
+              "example": "3 tsp"
+            }
+          }
+        ],
+
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RemoveIngredientsFromShopListResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No product with id=640c2dd963a319ea671e37c6 in shopping list",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": ["name", "email", "password"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Username"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Username"
+          },
+          "avatarURL": {
+            "type": [null, "staring"],
+            "description": "User's avatar"
+          }
+        }
+      },
+      "ResendVerifyRequest": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          }
+        }
+      },
+      "ResendVerifyResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Resend verification email",
+            "example": "You successfully verified your email!"
+          }
+        }
+      },
+      "VerificationEmailResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Verification user`s email",
+            "example": "You successfully verified your email!"
+          }
+        }
+      },
+      "LoginRequest": {
+        "required": ["email", "password"],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "куігде": {
+            "type": "string",
+            "description": "Session's access token (needed for all requests)",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MzQyMGFmMmNhMDg0YzkwNTAwODlkNyIsImlhdCI6MTY4MTE0ODI2MiwiZXhwIjoxNjgxMjM0NjYyfQ.K9m7rdlxHWcNHiwKHpfvFP1Aepqt0EjXPAsEL_jo4wY"
+          },
+          "id": {
+            "type": "string",
+            "description": "User's id",
+            "example": "643420af2ca084c9050089d7"
+          },
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Username"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "avatarURL": {
+            "type": [null, "string"],
+            "description": "User's avatar link",
+            "example": "User's avatar link"
+          }
+        }
+      },
+      "SubscriptionResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "User`s subscription",
+            "example": "You successfully confirmed to SoYummy news subscription!"
+          }
+        }
+      },
+      "SendSubscriptionEmailRequest": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          }
+        }
+      },
+      "SendSubscriptionEmailResponse": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "object",
+            "description": "User's name",
+            "example": "{'email': 'user@example.com'}"
+          }
+        }
+      },
+      "UpdateUserDataRequest": {
+        "type": "object",
+        "properties": {
+          "newAvatarUrl": {
+            "type": "string",
+            "description": "User's avatar",
+            "format": "binary"
+          },
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Username"
+          }
+        }
+      },
+      "UpdateUserDataResponse": {
+        "type": "object",
+        "properties": {
+          "avatarUrl": {
+            "type": "string",
+            "description": "User's avatar link",
+            "example": "User's avatar link"
+          },
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "Username"
+          }
+        }
+      },
+      "OwnRecipesResponse": {
+        "type": "object",
+        "description": "User`s own recipes",
+        "properties": {
+          "result": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "description": "User`s own recipes",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "Recipe`s id",
+                  "example": "643521e79b4a9688c539e7a5"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Title",
+                  "example": "Spaghetti Bolognese"
+                },
+                "category": {
+                  "type": "string",
+                  "description": "Recipe`s category",
+                  "example": "Beef"
+                },
+                "instructions": {
+                  "type": "string",
+                  "description": "Recipe`s instructions",
+                  "example": "Put the onion and oil in a large pan and fry over a fairly high heat for 3-4 mins. Add the garlic and mince and fry until they both brown. Add the mushrooms and herbs, and cook for another couple of mins. Stir in the tomatoes, beef stock, tomato ketchup or purée, Worcestershire sauce and seasoning. Bring to the boil, then reduce the heat, cover and simmer, stirring occasionally, for 30 mins. Meanwhile, cook the spaghetti in a large pan of boiling, salted water, according to packet instructions. Drain well, run hot water through it, put it back in the pan and add a dash of olive oil, if you like, then stir in the meat sauce. Serve in hot bowls and hand round Parmesan cheese, for sprinkling on top."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Recipe`s description",
+                  "example": "An Italian pasta dish made with spaghetti and a meat-based sauce, typically containing beef, tomatoes, onions, garlic, and herbs."
+                },
+                "preview": {
+                  "type": "string",
+                  "description": "Recipe`s images link",
+                  "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560401/huqdxgwkvbhsfjqtexsm.jpg"
+                },
+                "time": {
+                  "type": "string",
+                  "description": "Cooking time",
+                  "example": "45"
+                },
+                "favorites": {
+                  "type": "array",
+                  "description": "id of users who added this recipe to favorites",
+                  "items": {
+                    "type": "string",
+                    "description": "User`s id"
+                  },
+                  "example": [
+                    "640cd5ac2d9fecf12e8897ee",
+                    "640cd5ac2d9fecf12e8897ef"
+                  ]
+                },
+                "likes": {
+                  "type": "array",
+                  "description": "id of users who liked this recipe",
+                  "items": {
+                    "type": "string",
+                    "description": "User`s id"
+                  },
+                  "example": [
+                    "64133d202bf7d7dccd4f9fd5",
+                    "641807a63c1d9f12cba908c8"
+                  ]
+                },
+                "tags": {
+                  "type": "array",
+                  "description": "Recipe`s tags",
+                  "items": {
+                    "type": "string",
+                    "description": "Tag"
+                  },
+                  "example": ["Pasta", "Meat"]
+                },
+                "ingredients": {
+                  "type": "array",
+                  "description": "Recipe`s ingredients",
+                  "items": {
+                    "type": "object",
+                    "description": "Ingredient",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "id of ingredient",
+                        "example": "640c2dd963a319ea671e372c"
+                      },
+                      "measure": {
+                        "type": "string",
+                        "description": "Ingredient`s measure",
+                        "example": "1tbsp"
+                      }
+                    }
+                  },
+                  "example": [
+                    { "id": "640c2dd963a319ea671e372c", "measure": "1tbsp" },
+                    { "id": "640c2dd963a319ea671e370f", "measure": "500g" }
+                  ]
+                },
+                "owner": {
+                  "type": "object",
+                  "description": "The user who added the recipe",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "description": "User`s id",
+                      "example": "643420af2ca084c9050089d7"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "User`s name",
+                      "example": "Username"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "User's email",
+                      "format": "email"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "AddOwnRecipesRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title",
+            "example": "Spaghetti Bolognese"
+          },
+          "category": {
+            "type": "string",
+            "description": "Recipe`s category",
+            "example": "Beef"
+          },
+          "instructions": {
+            "type": "string",
+            "description": "Recipe`s instructions",
+            "example": "Put the onion and oil in a large pan and fry over a fairly high heat for 3-4 mins. Add the garlic and mince and fry until they both brown. Add the mushrooms and herbs, and cook for another couple of mins. Stir in the tomatoes, beef stock, tomato ketchup or purée, Worcestershire sauce and seasoning. Bring to the boil, then reduce the heat, cover and simmer, stirring occasionally, for 30 mins. Meanwhile, cook the spaghetti in a large pan of boiling, salted water, according to packet instructions. Drain well, run hot water through it, put it back in the pan and add a dash of olive oil, if you like, then stir in the meat sauce. Serve in hot bowls and hand round Parmesan cheese, for sprinkling on top."
+          },
+          "description": {
+            "type": "string",
+            "description": "Recipe`s description",
+            "example": "An Italian pasta dish made with spaghetti and a meat-based sauce, typically containing beef, tomatoes, onions, garlic, and herbs."
+          },
+          "preview": {
+            "type": "string",
+            "description": "Recipe`s images link",
+            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560401/huqdxgwkvbhsfjqtexsm.jpg"
+          },
+          "time": {
+            "type": "string",
+            "description": "Cooking time",
+            "example": "45"
+          },
+          "ingredients": {
+            "type": "array",
+            "description": "Recipe`s ingredients",
+            "items": {
+              "type": "object",
+              "description": "Ingredient",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "id of ingredient",
+                  "example": "640c2dd963a319ea671e372c"
+                },
+                "measure": {
+                  "type": "string",
+                  "description": "Ingredient`s measure",
+                  "example": "1tbsp"
+                }
+              }
+            },
+            "example": [
+              { "id": "640c2dd963a319ea671e372c", "measure": "1tbsp" },
+              { "id": "640c2dd963a319ea671e370f", "measure": "500g" }
+            ]
+          }
+        }
+      },
+      "AddOwnRecipesResponse": {
+        "type": "object",
+        "description": "Added recipe",
+        "properties": {
+          "result": {
+            "type": "object",
+            "description": "Added recipe",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "Recipe`s id",
+                "example": "643521e79b4a9688c539e7a5"
+              },
+              "title": {
+                "type": "string",
+                "description": "Title",
+                "example": "Spaghetti Bolognese"
+              },
+              "category": {
+                "type": "string",
+                "description": "Recipe`s category",
+                "example": "Beef"
+              },
+              "instructions": {
+                "type": "string",
+                "description": "Recipe`s instructions",
+                "example": "Put the onion and oil in a large pan and fry over a fairly high heat for 3-4 mins. Add the garlic and mince and fry until they both brown. Add the mushrooms and herbs, and cook for another couple of mins. Stir in the tomatoes, beef stock, tomato ketchup or purée, Worcestershire sauce and seasoning. Bring to the boil, then reduce the heat, cover and simmer, stirring occasionally, for 30 mins. Meanwhile, cook the spaghetti in a large pan of boiling, salted water, according to packet instructions. Drain well, run hot water through it, put it back in the pan and add a dash of olive oil, if you like, then stir in the meat sauce. Serve in hot bowls and hand round Parmesan cheese, for sprinkling on top."
+              },
+              "description": {
+                "type": "string",
+                "description": "Recipe`s description",
+                "example": "An Italian pasta dish made with spaghetti and a meat-based sauce, typically containing beef, tomatoes, onions, garlic, and herbs."
+              },
+              "preview": {
+                "type": "string",
+                "description": "Recipe`s images link",
+                "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560401/huqdxgwkvbhsfjqtexsm.jpg"
+              },
+              "time": {
+                "type": "string",
+                "description": "Cooking time",
+                "example": "45"
+              },
+              "favorites": {
+                "type": "array",
+                "description": "id of users who added this recipe to favorites",
+                "items": {
+                  "type": "string",
+                  "description": "User`s id"
+                },
+                "example": [
+                  "640cd5ac2d9fecf12e8897ee",
+                  "640cd5ac2d9fecf12e8897ef"
+                ]
+              },
+              "likes": {
+                "type": "array",
+                "description": "id of users who liked this recipe",
+                "items": {
+                  "type": "string",
+                  "description": "User`s id"
+                },
+                "example": [
+                  "64133d202bf7d7dccd4f9fd5",
+                  "641807a63c1d9f12cba908c8"
+                ]
+              },
+              "tags": {
+                "type": "array",
+                "description": "Recipe`s tags",
+                "items": {
+                  "type": "string",
+                  "description": "Tag"
+                },
+                "example": ["Pasta", "Meat"]
+              },
+              "ingredients": {
+                "type": "array",
+                "description": "Recipe`s ingredients",
+                "items": {
+                  "type": "object",
+                  "description": "Ingredient",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "id of ingredient",
+                      "example": "640c2dd963a319ea671e372c"
+                    },
+                    "measure": {
+                      "type": "string",
+                      "description": "Ingredient`s measure",
+                      "example": "1tbsp"
+                    }
+                  }
+                },
+                "example": [
+                  { "id": "640c2dd963a319ea671e372c", "measure": "1tbsp" },
+                  { "id": "640c2dd963a319ea671e370f", "measure": "500g" }
+                ]
+              },
+              "owner": {
+                "type": "string",
+                "description": "The user who added the recipe",
+                "example": "643420af2ca084c9050089d7"
+              },
+              "createdAt": {
+                "type": "string",
+                "description": "Recipe creation time",
+                "example": "2023-04-11T12:29:12.413Z"
+              },
+              "updatedAt": {
+                "type": "string",
+                "description": "Recipe update time",
+                "example": "2023-04-11T12:29:12.413Z"
+              }
+            }
+          }
+        }
+      },
+      "RecipesByCategoriesResponse": {
+        "type": "object",
+        "description": "Recipes by categories",
+        "properties": {
+          "Breakfast": {
+            "type": "array",
+            "description": "Recipes by category",
+            "items": {
+              "type": "object",
+              "description": "Recipe",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "Recipe`s id",
+                  "example": "640cd5ac2d9fecf12e8898df"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Title",
+                  "example": "Fruit and Cream Cheese Breakfast Pastries"
+                },
+                "category": {
+                  "type": "string",
+                  "description": "Category",
+                  "example": "Breakfast"
+                },
+                "thumb": {
+                  "type": "string",
+                  "description": "Recipe`s big images link",
+                  "example": "https://www.themealdb.com/images/media/meals/1543774956.jpg"
+                },
+                "preview": {
+                  "type": "string",
+                  "description": "Recipe`s images link",
+                  "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678561436/lj4kfx1zh4l8vejsgdle.jpg"
+                },
+                "popularity": {
+                  "type": "integer",
+                  "description": "Popularity",
+                  "example": 8
+                },
+                "ingredients": {
+                  "type": "array",
+                  "description": "Recipe`s ingredients",
+                  "items": {
+                    "type": "object",
+                    "description": "Ingredient",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "id of ingredient",
+                        "example": "640c2dd963a319ea671e379c"
+                      },
+                      "measure": {
+                        "type": "string",
+                        "description": "Ingredient`s measure",
+                        "example": "1 1/4 oz"
+                      }
+                    }
+                  },
+                  "example": [
+                    { "id": "640c2dd963a319ea671e379c", "measure": "1 1/4 oz" },
+                    { "id": "640c2dd963a319ea671e3774", "measure": "1 1/4 cup" }
+                  ]
+                }
+              }
+            }
+          },
+          "Dessert": {
+            "type": "array",
+            "description": "Recipes by category",
+            "items": {
+              "type": "object",
+              "description": "Recipe",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "Recipe`s id",
+                  "example": "640cd5ac2d9fecf12e8898f5"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Title",
+                  "example": "Apam balik"
+                },
+                "category": {
+                  "type": "string",
+                  "description": "Category",
+                  "example": "Dessert"
+                },
+                "thumb": {
+                  "type": "string",
+                  "description": "Recipe`s big images link",
+                  "example": "https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg"
+                },
+                "preview": {
+                  "type": "string",
+                  "description": "Recipe`s images link",
+                  "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678561435/hzprrtagxfjzzxmitb96.jpg"
+                },
+                "popularity": {
+                  "type": "integer",
+                  "description": "Popularity",
+                  "example": 6
+                },
+                "ingredients": {
+                  "type": "array",
+                  "description": "Recipe`s ingredients",
+                  "items": {
+                    "type": "object",
+                    "description": "Ingredient",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "id of ingredient",
+                        "example": "640c2dd963a319ea671e371f"
+                      },
+                      "measure": {
+                        "type": "string",
+                        "description": "Ingredient`s measure",
+                        "example": "200ml"
+                      }
+                    }
+                  },
+                  "example": [
+                    { "id": "640c2dd963a319ea671e371f", "measure": "200ml" },
+                    { "id": "640c2dd963a319ea671e372b", "measure": "60ml" }
+                  ]
+                }
+              }
+            }
+          },
+          "Miscellaneous": {
+            "type": "array",
+            "description": "Recipes by category",
+            "items": {
+              "type": "object",
+              "description": "Recipe",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "Recipe`s id",
+                  "example": "640cd5ac2d9fecf12e889890"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Title",
+                  "example": "Callaloo Jamaican Style"
+                },
+                "category": {
+                  "type": "string",
+                  "description": "Category",
+                  "example": "Miscellaneous"
+                },
+                "thumb": {
+                  "type": "string",
+                  "description": "Recipe`s big images link",
+                  "example": "https://www.themealdb.com/images/media/meals/ussyxw1515364536.jpg"
+                },
+                "preview": {
+                  "type": "string",
+                  "description": "Recipe`s images link",
+                  "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678561360/civuzjfrfqj4ysotmgy7.jpg"
+                },
+                "popularity": {
+                  "type": "integer",
+                  "description": "Popularity",
+                  "example": 3
+                },
+                "ingredients": {
+                  "type": "array",
+                  "description": "Recipe`s ingredients",
+                  "items": {
+                    "type": "object",
+                    "description": "Ingredient",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "id of ingredient",
+                        "example": "640c2dd963a319ea671e3707"
+                      },
+                      "measure": {
+                        "type": "string",
+                        "description": "Ingredient`s measure",
+                        "example": "1 bunch"
+                      }
+                    }
+                  },
+                  "example": [
+                    { "id": "640c2dd963a319ea671e3707", "measure": "1 bunch" },
+                    { "id": "640c2dd963a319ea671e3664", "measure": "2 strips" }
+                  ]
+                }
+              }
+            }
+          },
+          "Vegan": {
+            "type": "array",
+            "description": "Recipes by category",
+            "items": {
+              "type": "object",
+              "description": "Recipe",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "Recipe`s id",
+                  "example": "640cd5ac2d9fecf12e889893"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Title",
+                  "example": "Roast fennel and aubergine paella"
+                },
+                "category": {
+                  "type": "string",
+                  "description": "Category",
+                  "example": "Vegan"
+                },
+                "thumb": {
+                  "type": "string",
+                  "description": "Recipe`s big images link",
+                  "example": "https://www.themealdb.com/images/media/meals/1520081754.jpg"
+                },
+                "preview": {
+                  "type": "string",
+                  "description": "Recipe`s images link",
+                  "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678561360/qurmbrualwnbuiawu2nm.jpg"
+                },
+                "popularity": {
+                  "type": "integer",
+                  "description": "Popularity",
+                  "example": 3
+                },
+                "ingredients": {
+                  "type": "array",
+                  "description": "Recipe`s ingredients",
+                  "items": {
+                    "type": "object",
+                    "description": "Ingredient",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "id of ingredient",
+                        "example": "640c2dd963a319ea671e383e"
+                      },
+                      "measure": {
+                        "type": "string",
+                        "description": "Ingredient`s measure",
+                        "example": "6 small"
+                      }
+                    }
+                  },
+                  "example": [
+                    { "id": "640c2dd963a319ea671e383e", "measure": "6 small" },
+                    {
+                      "id": "640c2dd963a319ea671e37c8",
+                      "measure": "4 small"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "PopularRecipesResponse": {
+        "type": "array",
+        "description": " Popular recipes",
+        "items": {
+          "type": "object",
+          "description": "Recipe",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "Recipe`s id",
+              "example": "640cd5ac2d9fecf12e889849"
+            },
+            "title": {
+              "type": "string",
+              "description": "Title",
+              "example": "Beef Dumpling Stew"
+            },
+            "category": {
+              "type": "string",
+              "description": "Category",
+              "example": "Beef"
+            },
+            "area": {
+              "type": "string",
+              "description": "Area",
+              "example": "British"
+            },
+            "instructions": {
+              "type": "string",
+              "description": "Instructions",
+              "example": "Preheat the oven to 180C/350F/Gas 4.\r\n\r\nFor the beef stew, heat the oil and butter in an ovenproof casserole and fry the beef until browned on all sides.\r\n\r\nSprinkle over the flour and cook for a further 2-3 minutes.\r\n\r\nAdd the garlic and all the vegetables and fry for 1-2 minutes.\r\n\r\nStir in the wine, stock and herbs, then add the Worcestershire sauce and balsamic vinegar, to taste. Season with salt and freshly ground black pepper.\r\n\r\nCover with a lid, transfer to the oven and cook for about two hours, or until the meat is tender.\r\n\r\nFor the dumplings, sift the flour, baking powder and salt into a bowl.\r\nAdd the suet and enough water to form a thick dough.\r\n\r\nWith floured hands, roll spoonfuls of the dough into small balls.\r\n\r\nAfter two hours, remove the lid from the stew and place the balls on top of the stew. Cover, return to the oven and cook for a further 20 minutes, or until the dumplings have swollen and are tender. (If you prefer your dumplings with a golden top, leave the lid off when returning to the oven.)\r\n\r\nTo serve, place a spoonful of mashed potato onto each of four serving plates and top with the stew and dumplings. Sprinkle with chopped parsley."
+            },
+            "description": {
+              "type": "string",
+              "description": "Description",
+              "example": "A comforting stew made with beef, vegetables, and dumplings, perfect for a cold winter day."
+            },
+            "thumb": {
+              "type": "string",
+              "description": "Recipe`s big images link",
+              "example": "https://www.themealdb.com/images/media/meals/uyqrrv1511553350.jpg"
+            },
+            "preview": {
+              "type": "string",
+              "description": "Recipe`s images link",
+              "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560620/ktg9sptrbga8hd31n1yd.jpg"
+            },
+            "time": {
+              "type": "string",
+              "description": "Cooking time",
+              "example": "140"
+            },
+            "popularity": {
+              "type": "integer",
+              "description": "Popularity",
+              "example": "5"
+            },
+            "favorites": {
+              "type": "array",
+              "description": "id of users who added this recipe to favorites",
+              "items": {
+                "type": "string",
+                "description": "User`s id"
+              },
+              "example": [
+                "640cd5ac2d9fecf12e8897ee",
+                "640cd5ac2d9fecf12e8897ef"
+              ]
+            },
+            "likes": {
+              "type": "array",
+              "description": "id of users who liked this recipe",
+              "items": {
+                "type": "string",
+                "description": "User`s id"
+              },
+              "example": [
+                "64133d202bf7d7dccd4f9fd5",
+                "641807a63c1d9f12cba908c8"
+              ]
+            },
+            "youtube": {
+              "type": "string",
+              "description": "Link to the video how to cook",
+              "example": "https://www.youtube.com/watch?v=6NgheY-r5t0"
+            },
+            "tags": {
+              "type": "array",
+              "description": "Recipe`s tags",
+              "items": {
+                "type": "string",
+                "description": "Tag"
+              },
+              "example": ["Stew", "Baking"]
+            },
+            "ingredients": {
+              "type": "array",
+              "description": "Recipe`s ingredients",
+              "items": {
+                "type": "object",
+                "description": "Ingredient",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "id of ingredient",
+                    "example": "640c2dd963a319ea671e372c"
+                  },
+                  "measure": {
+                    "type": "string",
+                    "description": "Ingredient`s measure",
+                    "example": "2 tbs"
+                  }
+                }
+              },
+              "example": [
+                { "id": "640c2dd963a319ea671e372c", "measure": "2 tbs" },
+                { "id": "640c2dd963a319ea671e367e", "measure": "750g" }
+              ]
+            }
+          }
+        }
+      },
+      "RecipesByIdResponse": {
+        "type": "array",
+        "description": " Popular recipes",
+        "items": {
+          "type": "object",
+          "description": "Recipe",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "Recipe`s id",
+              "example": "640cd5ac2d9fecf12e889849"
+            },
+            "title": {
+              "type": "string",
+              "description": "Title",
+              "example": "Beef Dumpling Stew"
+            },
+            "category": {
+              "type": "string",
+              "description": "Category",
+              "example": "Beef"
+            },
+            "area": {
+              "type": "string",
+              "description": "Area",
+              "example": "British"
+            },
+            "instructions": {
+              "type": "string",
+              "description": "Instructions",
+              "example": "Preheat the oven to 180C/350F/Gas 4.\r\n\r\nFor the beef stew, heat the oil and butter in an ovenproof casserole and fry the beef until browned on all sides.\r\n\r\nSprinkle over the flour and cook for a further 2-3 minutes.\r\n\r\nAdd the garlic and all the vegetables and fry for 1-2 minutes.\r\n\r\nStir in the wine, stock and herbs, then add the Worcestershire sauce and balsamic vinegar, to taste. Season with salt and freshly ground black pepper.\r\n\r\nCover with a lid, transfer to the oven and cook for about two hours, or until the meat is tender.\r\n\r\nFor the dumplings, sift the flour, baking powder and salt into a bowl.\r\nAdd the suet and enough water to form a thick dough.\r\n\r\nWith floured hands, roll spoonfuls of the dough into small balls.\r\n\r\nAfter two hours, remove the lid from the stew and place the balls on top of the stew. Cover, return to the oven and cook for a further 20 minutes, or until the dumplings have swollen and are tender. (If you prefer your dumplings with a golden top, leave the lid off when returning to the oven.)\r\n\r\nTo serve, place a spoonful of mashed potato onto each of four serving plates and top with the stew and dumplings. Sprinkle with chopped parsley."
+            },
+            "description": {
+              "type": "string",
+              "description": "Description",
+              "example": "A comforting stew made with beef, vegetables, and dumplings, perfect for a cold winter day."
+            },
+            "thumb": {
+              "type": "string",
+              "description": "Recipe`s big image link",
+              "example": "https://www.themealdb.com/images/media/meals/uyqrrv1511553350.jpg"
+            },
+            "preview": {
+              "type": "string",
+              "description": "Recipe`s image link",
+              "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560620/ktg9sptrbga8hd31n1yd.jpg"
+            },
+            "time": {
+              "type": "string",
+              "description": "Cooking time",
+              "example": "140"
+            },
+            "popularity": {
+              "type": "integer",
+              "description": "Popularity",
+              "example": "5"
+            },
+            "favorites": {
+              "type": "array",
+              "description": "id of users who added this recipe to favorites",
+              "items": {
+                "type": "string",
+                "description": "User`s id"
+              },
+              "example": [
+                "640cd5ac2d9fecf12e8897ee",
+                "640cd5ac2d9fecf12e8897ef"
+              ]
+            },
+            "likes": {
+              "type": "array",
+              "description": "id of users who liked this recipe",
+              "items": {
+                "type": "string",
+                "description": "User`s id"
+              },
+              "example": [
+                "64133d202bf7d7dccd4f9fd5",
+                "641807a63c1d9f12cba908c8"
+              ]
+            },
+            "youtube": {
+              "type": "string",
+              "description": "Link to the video how to cook",
+              "example": "https://www.youtube.com/watch?v=6NgheY-r5t0"
+            },
+            "tags": {
+              "type": "array",
+              "description": "Recipe`s tags",
+              "items": {
+                "type": "string",
+                "description": "Tag"
+              },
+              "example": ["Stew", "Baking"]
+            },
+            "ingredients": {
+              "type": "array",
+              "description": "Recipe`s ingredients",
+              "items": {
+                "type": "object",
+                "description": "Ingredient",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "id of ingredient",
+                    "example": "640c2dd963a319ea671e372c"
+                  },
+                  "measure": {
+                    "type": "string",
+                    "description": "Ingredient`s measure",
+                    "example": "2 tbs"
+                  },
+                  "ttl": {
+                    "type": "string",
+                    "description": "Title",
+                    "example": "Olive Oil"
+                  },
+                  "desc": {
+                    "type": "string",
+                    "description": "Description",
+                    "example": "A type of oil made from pressing whole olives, commonly used in cooking and as a salad dressing."
+                  },
+                  "t": {
+                    "type": "string",
+                    "description": "",
+                    "example": ""
+                  },
+                  "thb": {
+                    "type": "string",
+                    "description": "Ingredient`s image link",
+                    "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564854/hzcfvlja7hmbp84z7f3q.png"
+                  }
+                }
+              },
+              "example": [
+                {
+                  "id": "640c2dd963a319ea671e372c",
+                  "measure": "2 tbs",
+                  "ttl": "Olive Oil",
+                  "desc": "A type of oil made from pressing whole olives, commonly used in cooking and as a salad dressing.",
+                  "t": "",
+                  "thb": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564854/hzcfvlja7hmbp84z7f3q.png"
+                },
+                {
+                  "id": "640c2dd963a319ea671e367e",
+                  "measure": "25g",
+                  "ttl": "Butter",
+                  "desc": "A dairy product made from churning cream or milk, with a high fat content and a creamy, rich flavor that is often used in cooking and baking.",
+                  "t": "",
+                  "thb": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564674/ovea5weymaecrnbwxuq9.png"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "CategoryListResponse": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "array",
+            "description": "Categories of recipes",
+            "items": {
+              "type": "string",
+              "description": "Category"
+            },
+            "example": [
+              "Beef",
+              "Breakfast",
+              "Chicken",
+              "Dessert",
+              "Goat",
+              "Lamb",
+              "Miscellaneous",
+              "Pasta",
+              "Pork",
+              "Seafood",
+              "Side",
+              "Starter",
+              "Vegan",
+              "Vegetarian"
+            ]
+          }
+        }
+      },
+      "RecipesByCategoryResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "description": "Recipes by category",
+          "properties": {
+            "metaData": {
+              "type": "array",
+              "description": "Meta data",
+              "items": {
+                "type": "object",
+                "description": "Total and current page",
+                "properties": {
+                  "total": {
+                    "type": "integer",
+                    "description": "Total",
+                    "example": 14
+                  },
+                  "curPage": {
+                    "type": "integer",
+                    "description": "Current page",
+                    "example": 1
+                  }
+                }
+              }
+            },
+            "recipeData": {
+              "type": "array",
+              "description": "Resipes data",
+              "items": {
+                "type": "object",
+                "description": "Recipes by category",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "Recipe`s id",
+                    "example": "640cd5ac2d9fecf12e889849"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Title",
+                    "example": "Beef Dumpling Stew"
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "Category",
+                    "example": "Beef"
+                  },
+                  "area": {
+                    "type": "string",
+                    "description": "Area",
+                    "example": "British"
+                  },
+                  "instructions": {
+                    "type": "string",
+                    "description": "Instructions",
+                    "example": "Preheat the oven to 180C/350F/Gas 4.\r\n\r\nFor the beef stew, heat the oil and butter in an ovenproof casserole and fry the beef until browned on all sides.\r\n\r\nSprinkle over the flour and cook for a further 2-3 minutes.\r\n\r\nAdd the garlic and all the vegetables and fry for 1-2 minutes.\r\n\r\nStir in the wine, stock and herbs, then add the Worcestershire sauce and balsamic vinegar, to taste. Season with salt and freshly ground black pepper.\r\n\r\nCover with a lid, transfer to the oven and cook for about two hours, or until the meat is tender.\r\n\r\nFor the dumplings, sift the flour, baking powder and salt into a bowl.\r\nAdd the suet and enough water to form a thick dough.\r\n\r\nWith floured hands, roll spoonfuls of the dough into small balls.\r\n\r\nAfter two hours, remove the lid from the stew and place the balls on top of the stew. Cover, return to the oven and cook for a further 20 minutes, or until the dumplings have swollen and are tender. (If you prefer your dumplings with a golden top, leave the lid off when returning to the oven.)\r\n\r\nTo serve, place a spoonful of mashed potato onto each of four serving plates and top with the stew and dumplings. Sprinkle with chopped parsley."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Description",
+                    "example": "A comforting stew made with beef, vegetables, and dumplings, perfect for a cold winter day."
+                  },
+                  "thumb": {
+                    "type": "string",
+                    "description": "Recipe`s big image link",
+                    "example": "https://www.themealdb.com/images/media/meals/uyqrrv1511553350.jpg"
+                  },
+                  "preview": {
+                    "type": "string",
+                    "description": "Recipe`s image link",
+                    "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560620/ktg9sptrbga8hd31n1yd.jpg"
+                  },
+                  "time": {
+                    "type": "string",
+                    "description": "Cooking time",
+                    "example": "140"
+                  },
+                  "popularity": {
+                    "type": "integer",
+                    "description": "Popularity",
+                    "example": "5"
+                  },
+                  "favorites": {
+                    "type": "array",
+                    "description": "id of users who added this recipe to favorites",
+                    "items": {
+                      "type": "string",
+                      "description": "User`s id"
+                    },
+                    "example": [
+                      "640cd5ac2d9fecf12e8897ee",
+                      "640cd5ac2d9fecf12e8897ef"
+                    ]
+                  },
+                  "likes": {
+                    "type": "array",
+                    "description": "id of users who liked this recipe",
+                    "items": {
+                      "type": "string",
+                      "description": "User`s id"
+                    },
+                    "example": [
+                      "64133d202bf7d7dccd4f9fd5",
+                      "641807a63c1d9f12cba908c8"
+                    ]
+                  },
+                  "youtube": {
+                    "type": "string",
+                    "description": "Link to the video how to cook",
+                    "example": "https://www.youtube.com/watch?v=6NgheY-r5t0"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "description": "Recipe`s tags",
+                    "items": {
+                      "type": "string",
+                      "description": "Tag"
+                    },
+                    "example": ["Stew", "Baking"]
+                  },
+                  "ingredients": {
+                    "type": "array",
+                    "description": "Recipe`s ingredients",
+                    "items": {
+                      "type": "object",
+                      "description": "Ingredient",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "id of ingredient",
+                          "example": "640c2dd963a319ea671e372c"
+                        },
+                        "measure": {
+                          "type": "string",
+                          "description": "Ingredient`s measure",
+                          "example": "2 tbs"
+                        },
+                        "ttl": {
+                          "type": "string",
+                          "description": "Title",
+                          "example": "Olive Oil"
+                        },
+                        "desc": {
+                          "type": "string",
+                          "description": "Description",
+                          "example": "A type of oil made from pressing whole olives, commonly used in cooking and as a salad dressing."
+                        },
+                        "t": {
+                          "type": "string",
+                          "description": "",
+                          "example": ""
+                        },
+                        "thb": {
+                          "type": "string",
+                          "description": "Ingredient`s image link",
+                          "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564854/hzcfvlja7hmbp84z7f3q.png"
+                        }
+                      }
+                    },
+                    "example": [
+                      {
+                        "id": "640c2dd963a319ea671e372c",
+                        "measure": "2 tbs",
+                        "ttl": "Olive Oil",
+                        "desc": "A type of oil made from pressing whole olives, commonly used in cooking and as a salad dressing.",
+                        "t": "",
+                        "thb": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564854/hzcfvlja7hmbp84z7f3q.png"
+                      },
+                      {
+                        "id": "640c2dd963a319ea671e367e",
+                        "measure": "25g",
+                        "ttl": "Butter",
+                        "desc": "A dairy product made from churning cream or milk, with a high fat content and a creamy, rich flavor that is often used in cooking and baking.",
+                        "t": "",
+                        "thb": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564674/ovea5weymaecrnbwxuq9.png"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "IngredientsListResponse": {
+        "type": "array",
+        "description": "Ingredients list",
+        "items": {
+          "type": "object",
+          "description": "Ingredient",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "Ingredient`s id",
+              "example": "640c2dd963a319ea671e3673"
+            },
+            "ttl": {
+              "type": "string",
+              "description": "Title",
+              "example": "Black Treacle"
+            },
+            "desc": {
+              "type": "string",
+              "description": "Description",
+              "example": "Molasses (American English) or black treacle (British English) is a viscous product resulting from refining sugarcane or sugar beets into sugar. Molasses varies by amount of sugar, method of extraction, and age of plant. Sugarcane molasses is primarily used for sweetening and flavoring foods in the United States, Canada, and elsewhere. Molasses is a defining component of fine commercial brown sugar.\r\n\r\nSweet sorghum syrup may be colloquially called \"sorghum molasses\" in the southern United States.[2][3] Similar products include honey, maple syrup, corn syrup, and invert syrup. Most of these alternative syrups have milder flavors."
+            },
+            "t": {
+              "type": "string",
+              "description": "",
+              "example": ""
+            },
+            "thb": {
+              "type": "string",
+              "description": "Ingredient`s image link",
+              "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564217/c9wd2a3r2twkolwimz85.png"
+            }
+          }
+        },
+        "example": [
+          {
+            "_id": "640c2dd963a319ea671e3673",
+            "ttl": "Black Treacle",
+            "desc": "Molasses (American English) or black treacle (British English) is a viscous product resulting from refining sugarcane or sugar beets into sugar. Molasses varies by amount of sugar, method of extraction, and age of plant. Sugarcane molasses is primarily used for sweetening and flavoring foods in the United States, Canada, and elsewhere. Molasses is a defining component of fine commercial brown sugar.\r\n\r\nSweet sorghum syrup may be colloquially called \"sorghum molasses\" in the southern United States.[2][3] Similar products include honey, maple syrup, corn syrup, and invert syrup. Most of these alternative syrups have milder flavors.",
+            "t": "",
+            "thb": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564217/c9wd2a3r2twkolwimz85.png"
+          },
+          {
+            "_id": "640c2dd963a319ea671e366e",
+            "ttl": "Beef Gravy",
+            "desc": "Beef is the culinary name for meat from cattle, particularly skeletal muscle. Humans have been eating beef since prehistoric times. Beef is a source of high-quality protein and nutrients.\r\n\r\nMost beef skeletal muscle meat can be used as is by merely cutting into certain parts, such as roasts, short ribs or steak (filet mignon, sirloin steak, rump steak, rib steak, rib eye steak, hanger steak, etc.), while other cuts are processed (corned beef or beef jerky). Trimmings, on the other hand, are usually mixed with meat from older, leaner (therefore tougher) cattle, are ground, minced or used in sausages. The blood is used in some varieties called blood sausage. Other parts that are eaten include other muscles and offal, such as the oxtail, liver, tongue, tripe from the reticulum or rumen, glands (particularly the pancreas and thymus, referred to as sweetbread), the heart, the brain (although forbidden where there is a danger of bovine spongiform encephalopathy, BSE, commonly referred to as mad cow disease), the kidneys, and the tender testicles of the bull (known in the United States as calf fries, prairie oysters, or Rocky Mountain oysters). Some intestines are cooked and eaten as is, but are more often cleaned and used as natural sausage casings. The bones are used for making beef stock.",
+            "t": "",
+            "thb": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564217/nkah6uviegei3dcgutce.png"
+          }
+        ]
+      },
+      "RecipesByQueryResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "description": "Recipes by query",
+          "properties": {
+            "metaData": {
+              "type": "array",
+              "description": "Meta data",
+              "items": {
+                "type": "object",
+                "description": "Total and current page",
+                "properties": {
+                  "total": {
+                    "type": "integer",
+                    "description": "Total",
+                    "example": 14
+                  },
+                  "curPage": {
+                    "type": "integer",
+                    "description": "Current page",
+                    "example": 1
+                  }
+                }
+              }
+            },
+            "recipeData": {
+              "type": "array",
+              "description": "Resipes data",
+              "items": {
+                "type": "object",
+                "description": "Recipes by query",
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "description": "Recipe`s id",
+                    "example": "640cd5ac2d9fecf12e889849"
+                  },
+                  "title": {
+                    "type": "string",
+                    "description": "Title",
+                    "example": "Beef Dumpling Stew"
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "Category",
+                    "example": "Beef"
+                  },
+                  "area": {
+                    "type": "string",
+                    "description": "Area",
+                    "example": "British"
+                  },
+                  "instructions": {
+                    "type": "string",
+                    "description": "Instructions",
+                    "example": "Preheat the oven to 180C/350F/Gas 4.\r\n\r\nFor the beef stew, heat the oil and butter in an ovenproof casserole and fry the beef until browned on all sides.\r\n\r\nSprinkle over the flour and cook for a further 2-3 minutes.\r\n\r\nAdd the garlic and all the vegetables and fry for 1-2 minutes.\r\n\r\nStir in the wine, stock and herbs, then add the Worcestershire sauce and balsamic vinegar, to taste. Season with salt and freshly ground black pepper.\r\n\r\nCover with a lid, transfer to the oven and cook for about two hours, or until the meat is tender.\r\n\r\nFor the dumplings, sift the flour, baking powder and salt into a bowl.\r\nAdd the suet and enough water to form a thick dough.\r\n\r\nWith floured hands, roll spoonfuls of the dough into small balls.\r\n\r\nAfter two hours, remove the lid from the stew and place the balls on top of the stew. Cover, return to the oven and cook for a further 20 minutes, or until the dumplings have swollen and are tender. (If you prefer your dumplings with a golden top, leave the lid off when returning to the oven.)\r\n\r\nTo serve, place a spoonful of mashed potato onto each of four serving plates and top with the stew and dumplings. Sprinkle with chopped parsley."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Description",
+                    "example": "A comforting stew made with beef, vegetables, and dumplings, perfect for a cold winter day."
+                  },
+                  "thumb": {
+                    "type": "string",
+                    "description": "Recipe`s big image link",
+                    "example": "https://www.themealdb.com/images/media/meals/uyqrrv1511553350.jpg"
+                  },
+                  "preview": {
+                    "type": "string",
+                    "description": "Recipe`s image link",
+                    "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560620/ktg9sptrbga8hd31n1yd.jpg"
+                  },
+                  "time": {
+                    "type": "string",
+                    "description": "Cooking time",
+                    "example": "140"
+                  },
+                  "popularity": {
+                    "type": "integer",
+                    "description": "Popularity",
+                    "example": "5"
+                  },
+                  "favorites": {
+                    "type": "array",
+                    "description": "id of users who added this recipe to favorites",
+                    "items": {
+                      "type": "string",
+                      "description": "User`s id"
+                    },
+                    "example": [
+                      "640cd5ac2d9fecf12e8897ee",
+                      "640cd5ac2d9fecf12e8897ef"
+                    ]
+                  },
+                  "likes": {
+                    "type": "array",
+                    "description": "id of users who liked this recipe",
+                    "items": {
+                      "type": "string",
+                      "description": "User`s id"
+                    },
+                    "example": [
+                      "64133d202bf7d7dccd4f9fd5",
+                      "641807a63c1d9f12cba908c8"
+                    ]
+                  },
+                  "youtube": {
+                    "type": "string",
+                    "description": "Link to the video how to cook",
+                    "example": "https://www.youtube.com/watch?v=6NgheY-r5t0"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "description": "Recipe`s tags",
+                    "items": {
+                      "type": "string",
+                      "description": "Tag"
+                    },
+                    "example": ["Stew", "Baking"]
+                  },
+                  "ingredients": {
+                    "type": "array",
+                    "description": "Recipe`s ingredients",
+                    "items": {
+                      "type": "object",
+                      "description": "Ingredient",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "id of ingredient",
+                          "example": "640c2dd963a319ea671e372c"
+                        },
+                        "measure": {
+                          "type": "string",
+                          "description": "Ingredient`s measure",
+                          "example": "2 tbs"
+                        },
+                        "ttl": {
+                          "type": "string",
+                          "description": "Title",
+                          "example": "Olive Oil"
+                        },
+                        "desc": {
+                          "type": "string",
+                          "description": "Description",
+                          "example": "A type of oil made from pressing whole olives, commonly used in cooking and as a salad dressing."
+                        },
+                        "t": {
+                          "type": "string",
+                          "description": "",
+                          "example": ""
+                        },
+                        "thb": {
+                          "type": "string",
+                          "description": "Ingredient`s image link",
+                          "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564854/hzcfvlja7hmbp84z7f3q.png"
+                        }
+                      }
+                    },
+                    "example": [
+                      {
+                        "id": "640c2dd963a319ea671e372c",
+                        "measure": "2 tbs",
+                        "ttl": "Olive Oil",
+                        "desc": "A type of oil made from pressing whole olives, commonly used in cooking and as a salad dressing.",
+                        "t": "",
+                        "thb": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564854/hzcfvlja7hmbp84z7f3q.png"
+                      },
+                      {
+                        "id": "640c2dd963a319ea671e367e",
+                        "measure": "25g",
+                        "ttl": "Butter",
+                        "desc": "A dairy product made from churning cream or milk, with a high fat content and a creamy, rich flavor that is often used in cooking and baking.",
+                        "t": "",
+                        "thb": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564674/ovea5weymaecrnbwxuq9.png"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "RecipesByIngredientResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "description": "Recipes by ingredient",
+          "properties": {
+            "metaData": {
+              "type": "array",
+              "description": "Meta data",
+              "items": {
+                "type": "object",
+                "description": "Total and current page",
+                "properties": {
+                  "total": {
+                    "type": "integer",
+                    "description": "Total",
+                    "example": 39
+                  },
+                  "curPage": {
+                    "type": "integer",
+                    "description": "Current page",
+                    "example": 1
+                  }
+                }
+              }
+            },
+            "recipeData": {
+              "type": "array",
+              "description": "Resipes data",
+              "items": {
+                "type": "object",
+                "description": "Recipes by ingredient",
+                "properties": {
+                  "ttl": {
+                    "type": "string",
+                    "description": "Ingredient`s title",
+                    "example": "Beef Gravy"
+                  },
+                  "dasc": {
+                    "type": "string",
+                    "description": "Ingredient`s description",
+                    "example": "Beef is the culinary name for meat from cattle, particularly skeletal muscle. Humans have been eating beef since prehistoric times. Beef is a source of high-quality protein and nutrients.\r\n\r\nMost beef skeletal muscle meat can be used as is by merely cutting into certain parts, such as roasts, short ribs or steak (filet mignon, sirloin steak, rump steak, rib steak, rib eye steak, hanger steak, etc.), while other cuts are processed (corned beef or beef jerky). Trimmings, on the other hand, are usually mixed with meat from older, leaner (therefore tougher) cattle, are ground, minced or used in sausages. The blood is used in some varieties called blood sausage. Other parts that are eaten include other muscles and offal, such as the oxtail, liver, tongue, tripe from the reticulum or rumen, glands (particularly the pancreas and thymus, referred to as sweetbread), the heart, the brain (although forbidden where there is a danger of bovine spongiform encephalopathy, BSE, commonly referred to as mad cow disease), the kidneys, and the tender testicles of the bull (known in the United States as calf fries, prairie oysters, or Rocky Mountain oysters). Some intestines are cooked and eaten as is, but are more often cleaned and used as natural sausage casings. The bones are used for making beef stock."
+                  },
+                  "thb": {
+                    "type": "string",
+                    "description": "Ingredient`s big image link",
+                    "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564217/nkah6uviegei3dcgutce.png"
+                  },
+                  "recipe": {
+                    "type": "object",
+                    "description": "Recipe",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "description": "Recipe`s id",
+                        "example": "640cd5ac2d9fecf12e889809"
+                      },
+                      "title": {
+                        "type": "string",
+                        "description": "Recipe`s title",
+                        "example": "Poutine"
+                      },
+                      "thumb": {
+                        "type": "string",
+                        "description": "Recipe`s big image link",
+                        "example": "https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg"
+                      },
+                      "ingredients": {
+                        "type": "array",
+                        "description": "Recipe`s ingredients",
+                        "items": {
+                          "type": "object",
+                          "description": "Ingredient",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "description": "Ingredients`s id",
+                              "example": "640c2dd963a319ea671e3789"
+                            },
+                            "measure": {
+                              "type": "string",
+                              "description": "Measure",
+                              "example": "Dash"
+                            },
+                            "ttl": {
+                              "type": "string",
+                              "description": "Title",
+                              "example": "Sardines"
+                            },
+                            "desc": {
+                              "type": "string",
+                              "description": "Description",
+                              "example": "\"Sardine\" and \"pilchard\" are common names that refer to various small, oily forage fish in the herring family Clupeidae. The term \"sardine\" was first used in English during the early 15th century and may come from the Mediterranean island of Sardinia, around which sardines were once abundant."
+                            },
+                            "thb": {
+                              "type": "string",
+                              "description": "Ingredients`s big image link",
+                              "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678565178/gefoqmunmmwev0ikmvva.png"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ShoppingListResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "description": "Added ingredient",
+          "properties": {
+            "productId": {
+              "type": "string",
+              "description": "Ingredient`s id",
+              "example": "640c2dd963a319ea671e37c6"
+            },
+            "measure": {
+              "type": "string",
+              "description": "Measure",
+              "example": "3 tsp"
+            },
+            "title": {
+              "type": "string",
+              "description": "Title",
+              "example": "Goose Fat"
+            },
+            "thumb": {
+              "type": "string",
+              "description": "Ingredient`s big image link",
+              "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564978/pxzp8fykcypernd56ucx.png"
+            }
+          }
+        },
+        "example": [
+          {
+            "productId": "640c2dd963a319ea671e37c6",
+            "measure": "3 tsp",
+            "title": "Goose Fat",
+            "thumb": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564978/pxzp8fykcypernd56ucx.png"
+          },
+          {
+            "productId": "640c2dd963a319ea671e3821",
+            "measure": "600g",
+            "title": "Beef Shin",
+            "thumb": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564979/pdbbfcq3ozpye1wb1sge.png"
+          }
+        ]
+      },
+      "AddIngredientsToShopListResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "description": "Added ingredient",
+          "properties": {
+            "productId": {
+              "type": "string",
+              "description": "Ingredient`s id",
+              "example": "640c2dd963a319ea671e37c6"
+            },
+            "measure": {
+              "type": "string",
+              "description": "Measure",
+              "example": "3 tsp"
+            },
+            "title": {
+              "type": "string",
+              "description": "Title",
+              "example": "Goose Fat"
+            },
+            "thumb": {
+              "type": "string",
+              "description": "Ingredient`s big image link",
+              "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564978/pxzp8fykcypernd56ucx.png"
+            }
+          }
+        }
+      },
+      "RemoveIngredientsFromShopListResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "description": "Removed ingredient",
+          "properties": {
+            "productId": {
+              "type": "string",
+              "description": "Ingredient`s id",
+              "example": "640c2dd963a319ea671e3821"
+            },
+            "measure": {
+              "type": "string",
+              "description": "Measure",
+              "example": "600g"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
