@@ -9,7 +9,7 @@ const removeOwnRecipes = async (req, res) => {
     throw HttpError(404, `Recipe with id=${recipeId} not found`);
   }
 
-  res.json({ result });
+  res.json({ message: "Recipe successfully deleted" });
 };
 
 module.exports = removeOwnRecipes;

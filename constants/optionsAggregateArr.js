@@ -20,7 +20,7 @@ const getOptionsAggArr1 = (optObj) => [
                 $arrayElemAt: [
                   "$ingr_info",
                   {
-                    $indexOfArray: ["$ingr_info", "$$this.id"],
+                    $indexOfArray: ["$ingr_info._id", "$$this.id"],
                   },
                 ],
               },
@@ -35,18 +35,14 @@ const getOptionsAggArr1 = (optObj) => [
     $unset: ["ingr_info", "ingredients._id", "createdAt", "updatedAt"],
   },
 ];
-const getOptionsAggArr2 = (ingredient, result1) => [
-  {
-    $match: {
-      ttl: ingredient,
-    },
-  },
-
+const getOptionsAggArr2 = (optObj, result1) => [
+  optObj,
   {
     $lookup: {
       from: "recipes",
       localField: "_id",
       foreignField: "ingredients.id",
+      let: { ingr: result1 },
       pipeline: [
         {
           $project: {
@@ -64,7 +60,7 @@ const getOptionsAggArr2 = (ingredient, result1) => [
                         $arrayElemAt: [
                           result1,
                           {
-                            $indexOfArray: [result1, "$$this.id"],
+                            $indexOfArray: ["$$ingr._id", "$$this.id"],
                           },
                         ],
                       },

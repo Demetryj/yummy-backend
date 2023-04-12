@@ -52,12 +52,8 @@ router.post(
   ownRecipesCtrl.addOwnRecipes
 );
 
-router.delete(
-  "/:userId/own-recipes/:recipeId",
-  auth,
-  ownRecipesCtrl.removeOwnRecipes
-);
+router.delete("/own-recipes/:recipeId", auth, ownRecipesCtrl.removeOwnRecipes);
 
-router.get("/info/:userId", auth, authCtrl.getUserInfo);
-
+// router.get("/info/:userId", auth, authCtrl.getUserInfo);
+// чи потрібен??????
 module.exports = router;

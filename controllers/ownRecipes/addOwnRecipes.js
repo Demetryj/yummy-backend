@@ -5,12 +5,12 @@ const addOwnRecipes = async (req, res) => {
 
   const {
     title,
-    preview,
-    description,
     category,
+    instructions,
+    description,
+    preview,
     time,
     ingredients,
-    instructions,
   } = req.body;
 
   const result = await Recipe.create({
