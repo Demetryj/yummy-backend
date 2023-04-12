@@ -690,9 +690,113 @@
         }
       }
     },
-    "api/recipes/:recipeId/favorites/true": {},
-    "api/recipes/:recipeId/favorites/false": {},
-    "api/recipes/favorites/list": {},
+    "api/recipes/favorites/list": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Favorites recipes",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FavoritesRecipesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/recipes/:recipeId/favorites/true": {
+      "patch": {
+        "tags": ["Recipes"],
+        "summary": "Adding recipes to favorites",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recipeId",
+            "required": true,
+            "description": "Recipe`s id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddRecipesToFaviritesResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "api/recipes/:recipeId/favorites/false": {
+      "patch": {
+        "tags": ["Recipes"],
+        "summary": "Removing recipes from the favorites",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recipeId",
+            "required": true,
+            "description": "Recipe`s id",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Message",
+                      "example": "Delete success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    },
     "api/recipes/ingredients/list": {
       "get": {
         "tags": ["Ingredients"],
@@ -2188,6 +2292,91 @@
                     ]
                   }
                 }
+              }
+            }
+          }
+        }
+      },
+      "FavoritesRecipesResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "description": "Faforite recipe",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "Recip`s id",
+              "example": "640cd5ac2d9fecf12e8897fc"
+            },
+            "title": {
+              "type": "string",
+              "description": "Title",
+              "example": "Spaghetti Bolognese"
+            },
+            "category": {
+              "type": "string",
+              "description": "Category",
+              "example": "Beef"
+            },
+            "area": {
+              "type": "string",
+              "description": "Frea",
+              "example": "Italian"
+            },
+            "description": {
+              "type": "string",
+              "description": "Description",
+              "example": "An Italian pasta dish made with spaghetti and a meat-based sauce, typically containing beef, tomatoes, onions, garlic, and herbs."
+            },
+            "preview": {
+              "type": "string",
+              "description": "Recipe`s image link",
+              "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560401/huqdxgwkvbhsfjqtexsm.jpg"
+            },
+            "timt": {
+              "type": "string",
+              "description": "Cooking time",
+              "example": "45"
+            },
+            "popularity": {
+              "type": "integer",
+              "description": "Popularity",
+              "example": 2
+            }
+          }
+        }
+      },
+      "AddRecipesToFaviritesResponse": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "description": "Users`info",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "User`s id",
+                "example": "643420af2ca084c9050089d7"
+              },
+              "favorites": {
+                "type": "array",
+                "description": "Id of favorite recipes",
+                "example": [
+                  "640cd5ac2d9fecf12e8897fc",
+                  "640cd5ac2d9fecf12e889849",
+                  "640cd5ac2d9fecf12e8897ee"
+                ]
+              }
+            }
+          },
+          "result": {
+            "type": "object",
+            "description": "id added recipe",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "description": "id added recipe",
+                "example": "640cd5ac2d9fecf12e8897fc"
               }
             }
           }
