@@ -42,6 +42,7 @@ const getOptionsAggArr2 = (optObj, result1) => [
       from: "recipes",
       localField: "_id",
       foreignField: "ingredients.id",
+      let: { ingr: result1 },
       pipeline: [
         {
           $project: {
@@ -59,7 +60,7 @@ const getOptionsAggArr2 = (optObj, result1) => [
                         $arrayElemAt: [
                           result1,
                           {
-                            $indexOfArray: [result1, "$$this.id"],
+                            $indexOfArray: ["$$ingr._id", "$$this.id"],
                           },
                         ],
                       },
