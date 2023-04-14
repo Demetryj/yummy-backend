@@ -1,4 +1,5 @@
 const { Recipe } = require("../../models/recipe");
+const { HttpError } = require("../../helpers/HttpError");
 
 const getRecipesByCategory = async (req, res) => {
   const { alias } = req.params;
@@ -58,6 +59,10 @@ const getRecipesByCategory = async (req, res) => {
       recipeData: [{ $skip: +skip }, { $limit: +limit }],
     })
     .unwind("metaData");
+
+  if (!result) {
+    throw HttpError(404, "Not found");
+  }
 
   res.json(result);
 };
