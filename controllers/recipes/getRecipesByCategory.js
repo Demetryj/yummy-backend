@@ -1,4 +1,3 @@
-const { aggregateOpts } = require("../../constants");
 const { Recipe } = require("../../models/recipe");
 
 const getRecipesByCategory = async (req, res) => {
@@ -7,14 +6,58 @@ const getRecipesByCategory = async (req, res) => {
   const curPage = +page;
   const skip = (curPage - 1) * +limit;
 
-  const result = await Recipe.aggregate(
-    aggregateOpts.getOptionsAggArr1({
+  const result = await Recipe.aggregate([
+    {
       $match: { category: alias },
+    },
+    {
+      $lookup: {
+        from: "ingredients",
+        localField: "ingredients.id",
+        foreignField: "_id",
+        as: "ingr_info",
+      },
+    },
+
+    // -----------------------------------------------------------------------------------------------
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    // Нажаль, при наявності нижчезакоментованої частини коду, запит  !!САМЕ З ПАРАМЕТРОМ "Beef" видає -- {
+    //   "message": "PlanExecutor error during aggregation :: caused by :: $mergeObjects requires object inputs, but input \"Cheese\" is of type string"
+    // }
+
+    // {
+    //   $set: {
+    //     ingredients: {
+    //       $map: {
+    //         input: "$ingredients",
+    //         in: {
+    //           $mergeObjects: [
+    //             "$$this",
+    //             {
+    //               $arrayElemAt: [
+    //                 "$ingr_info",
+    //                 {
+    //                   $indexOfArray: ["$ingr_info._id", "$$this.id"],
+    //                 },
+    //               ],
+    //             },
+    //           ],
+    //         },
+    //       },
+    //     },
+    //   },
+    // },
+
+    {
+      $unset: ["ingredients._id", "createdAt", "updatedAt"],
+    },
+  ])
+    .facet({
+      metaData: [{ $count: "total" }, { $addFields: { curPage } }],
+      recipeData: [{ $skip: +skip }, { $limit: +limit }],
     })
-  ).facet({
-    metaData: [{ $count: "total" }, { $addFields: { curPage } }],
-    recipeData: [{ $skip: +skip }, { $limit: +limit }],
-  });
+    .unwind("metaData");
 
   res.json(result);
 };
