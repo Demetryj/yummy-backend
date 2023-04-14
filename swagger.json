@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "SoYummy API docs",
     "description": "API documentation for GoIT group-project 'SoYummy'. [Backend github repository](https://github.com/Demetryj/yummy-backend)",
     "license": {
@@ -2119,22 +2119,18 @@
           "description": "Recipes by category",
           "properties": {
             "metaData": {
-              "type": "array",
-              "description": "Meta data",
-              "items": {
-                "type": "object",
-                "description": "Total and current page",
-                "properties": {
-                  "total": {
-                    "type": "integer",
-                    "description": "Total",
-                    "example": 14
-                  },
-                  "curPage": {
-                    "type": "integer",
-                    "description": "Current page",
-                    "example": 1
-                  }
+              "type": "object",
+              "description": "Total and current page",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "description": "Total",
+                  "example": 14
+                },
+                "curPage": {
+                  "type": "integer",
+                  "description": "Current page",
+                  "example": 1
                 }
               }
             },
@@ -2249,6 +2245,31 @@
                           "type": "string",
                           "description": "Ingredient`s measure",
                           "example": "2 tbs"
+                        }
+                      }
+                    },
+                    "example": [
+                      {
+                        "id": "640c2dd963a319ea671e372c",
+                        "measure": "2 tbs"
+                      },
+                      {
+                        "id": "640c2dd963a319ea671e367e",
+                        "measure": "25g"
+                      }
+                    ]
+                  },
+                  "ingr_info": {
+                    "type": "array",
+                    "description": "Recipe`s ingredients information",
+                    "items": {
+                      "type": "object",
+                      "description": "Ingredient",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "id of ingredient",
+                          "example": "640c2dd963a319ea671e372c"
                         },
                         "ttl": {
                           "type": "string",
@@ -2275,7 +2296,6 @@
                     "example": [
                       {
                         "id": "640c2dd963a319ea671e372c",
-                        "measure": "2 tbs",
                         "ttl": "Olive Oil",
                         "desc": "A type of oil made from pressing whole olives, commonly used in cooking and as a salad dressing.",
                         "t": "",
@@ -2283,7 +2303,6 @@
                       },
                       {
                         "id": "640c2dd963a319ea671e367e",
-                        "measure": "25g",
                         "ttl": "Butter",
                         "desc": "A dairy product made from churning cream or milk, with a high fat content and a creamy, rich flavor that is often used in cooking and baking.",
                         "t": "",
