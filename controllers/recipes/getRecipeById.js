@@ -12,7 +12,7 @@ const getRecipeById = async (req, res) => {
     })
   );
 
-  if (!result) {
+  if (result.length === 0) {
     throw HttpError(404, "Not found");
   }
 
