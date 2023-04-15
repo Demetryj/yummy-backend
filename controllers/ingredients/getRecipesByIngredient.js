@@ -1,4 +1,5 @@
 const { aggregateOpts } = require("../../constants");
+const { HttpError } = require("../../helpers");
 const { Ingredient } = require("../../models/ingredient");
 
 const getRecipesByIngredient = async (req, res) => {
@@ -23,7 +24,9 @@ const getRecipesByIngredient = async (req, res) => {
       recipeData: [{ $skip: +skip }, { $limit: +limit }],
     })
     .unwind("metaData");
-
+  if (result.length === 0) {
+    throw HttpError(404, "Not found");
+  }
   res.json(result);
 };
 module.exports = getRecipesByIngredient;
