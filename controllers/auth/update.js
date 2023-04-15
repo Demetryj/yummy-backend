@@ -1,21 +1,35 @@
-const { User } = require("../../models/user");
+const { User } = require('../../models/user');
 
 const update = async (req, res) => {
   const { name: newName } = req.body;
   const newAvatarUrl = req.file?.path;
-  const { _id, name, avatarURL } = req.user;
+  const { _id } = req.user;
 
-  const updateName = !newName ? newName : name;
-  const updateAvatarURL = !newAvatarUrl ? newAvatarUrl : avatarURL;
+  if (newName) {
+    await User.findByIdAndUpdate(
+      _id,
+      {
+        $set: { name: newName },
+      },
+      { new: true }
+    );
+  }
 
-  await User.findByIdAndUpdate(_id, {
-    name: updateName,
-    avatarURL: updateAvatarURL,
-  });
+  if (newAvatarUrl) {
+    await User.findByIdAndUpdate(
+      _id,
+      {
+        $set: { avatarURL: newAvatarUrl },
+      },
+      { new: true }
+    );
+  }
+
+  const user = await User.findById(_id);
 
   res.json({
-    name: updateName,
-    avatarURL: updateAvatarURL,
+    name: user.name,
+    avatarURL: user.avatarURL,
   });
 };
 
