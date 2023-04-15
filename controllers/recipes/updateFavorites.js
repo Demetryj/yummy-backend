@@ -1,6 +1,6 @@
 const { Recipe, User } = require('../../models/recipe');
 
-const { HttpError} = require('../../helpers');
+const { HttpError } = require('../../helpers');
 
 const updateFavorites = async (req, res) => {
   const { _id: owner } = req.user;
@@ -28,7 +28,7 @@ const updateFavorites = async (req, res) => {
     throw HttpError(404, 'Not Found');
   }
 
-  res.json({ result });
+  res.status(200).json({ result });
 };
 
 module.exports = updateFavorites;
