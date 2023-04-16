@@ -1146,7 +1146,7 @@
       "LoginResponse": {
         "type": "object",
         "properties": {
-          "result": {
+          "token": {
             "type": "string",
             "description": "Session's access token (needed for all requests)",
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MzQyMGFmMmNhMDg0YzkwNTAwODlkNyIsImlhdCI6MTY4MTE0ODI2MiwiZXhwIjoxNjgxMjM0NjYyfQ.K9m7rdlxHWcNHiwKHpfvFP1Aepqt0EjXPAsEL_jo4wY"
@@ -1161,11 +1161,7 @@
             "description": "User's name",
             "example": "Username"
           },
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email"
-          },
+
           "avatarURL": {
             "type": [null, "string"],
             "description": "User's avatar link",
