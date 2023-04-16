@@ -396,7 +396,7 @@
           }
         ],
         "requestBody": {
-          "description": "User`s email",
+          "description": "New own recipe",
           "required": true,
           "content": {
             "application/json": {
