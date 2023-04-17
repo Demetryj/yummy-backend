@@ -1,22 +1,26 @@
+/* eslint-disable camelcase */
+
 const { Recipe } = require("../../models");
-const { HttpError } = require("../../helpers");
 
 const listOwnRecipes = async (req, res) => {
+  const { page = 1, per_page = 4 } = req.query;
+  const curPage = +page;
+  const skip = (curPage - 1) * +per_page;
   const { _id: owner } = req.user;
 
-  const { page = 1, limit = 10 } = req.query;
-  const skip = (page - 1) * limit;
+  const result = await Recipe.aggregate([
+    { $match: { owner: { $in: [owner] } } },
+  ])
+    .sort({
+      _id: "descending",
+    })
+    .facet({
+      metaData: [{ $count: "total" }, { $addFields: { curPage } }],
+      recipeData: [{ $skip: +skip }, { $limit: +per_page }],
+    })
+    .unwind("metaData");
 
-  const result = await Recipe.find({ owner }, "-createdAt -updatedAt", {
-    skip,
-    limit: Number(limit),
-  }).populate("owner", "name email");
-
-  if (!result) {
-    throw HttpError(404, `No recipe was found`);
-  }
-
-  res.json({ result });
+  res.json(result);
 };
 
 module.exports = listOwnRecipes;
