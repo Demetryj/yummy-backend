@@ -3,7 +3,6 @@ const router = express.Router();
 const { authValidators } = require('../../models/user');
 const { validateBodyWrapper, auth, uploadCloud } = require('../../middlewares/index');
 const { authCtrl, ownRecipesCtrl } = require('../../controllers');
-const { schemas } = require('../../models/recipe');
 
 router.post('/register', validateBodyWrapper(authValidators.register), authCtrl.register);
 
