@@ -12,7 +12,7 @@ const getRecipesByIngredient = async (req, res) => {
     aggregateOpts.getOptionsAggArr2(
       {
         $match: {
-          ttl: { $regex: "^" + ingredient, $options: "i" },
+          ttl: ingredient,
         },
       },
       result1
