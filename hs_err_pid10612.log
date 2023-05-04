@@ -1,0 +1,197 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 32744 bytes for ChunkPool::allocate
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Unscaled Compressed Oops mode in which the Java heap is
+#     placed in the first 4GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 4GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (allocation.cpp:272), pid=10612, tid=0x00000000000028ac
+#
+# JRE version: Java(TM) SE Runtime Environment (8.0_241-b07) (build 1.8.0_241-b07)
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (25.241-b07 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00000000172a1000):  JavaThread "C2 CompilerThread1" daemon [_thread_in_native, id=10412, stack(0x0000000018ae0000,0x0000000018be0000)]
+
+Stack: [0x0000000018ae0000,0x0000000018be0000]
+[error occurred during error reporting (printing stack bounds), id 0xc0000005]
+
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+
+
+Current CompileTask:
+C2:    331   77       4       java.lang.String::indexOf (70 bytes)
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x000000000266d000 JavaThread "DestroyJavaVM" [_thread_blocked, id=10460, stack(0x0000000002460000,0x0000000002560000)]
+  0x0000000018c1e800 JavaThread "Service Thread" daemon [_thread_blocked, id=10848, stack(0x00000000190e0000,0x00000000191e0000)]
+  0x0000000018be0800 JavaThread "C1 CompilerThread2" daemon [_thread_blocked, id=4144, stack(0x0000000018fe0000,0x00000000190e0000)]
+=>0x00000000172a1000 JavaThread "C2 CompilerThread1" daemon [_thread_in_native, id=10412, stack(0x0000000018ae0000,0x0000000018be0000)]
+  0x000000001729e000 JavaThread "C2 CompilerThread0" daemon [_thread_blocked, id=1332, stack(0x00000000189e0000,0x0000000018ae0000)]
+  0x000000001729a800 JavaThread "Attach Listener" daemon [_thread_blocked, id=8492, stack(0x00000000188e0000,0x00000000189e0000)]
+  0x0000000017299800 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=10580, stack(0x00000000187e0000,0x00000000188e0000)]
+  0x0000000017281800 JavaThread "Finalizer" daemon [_thread_blocked, id=11816, stack(0x00000000184e0000,0x00000000185e0000)]
+  0x0000000017259800 JavaThread "Reference Handler" daemon [_thread_blocked, id=11620, stack(0x00000000183e0000,0x00000000184e0000)]
+
+Other Threads:
+  0x0000000017257800 VMThread [stack: 0x00000000182e0000,0x00000000183e0000] [id=9048]
+  0x0000000018c7a800 WatcherThread [stack: 0x00000000191e0000,0x00000000192e0000] [id=8772]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+OutOfMemory and StackOverflow Exception counts:
+OutOfMemoryError java_heap_errors=2
+
+heap address: 0x0000000081c00000, size: 2020 MB, Compressed Oops mode: 32-bit
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 3
+Compressed class space size: 1073741824 Address: 0x0000000100000000
+
+Heap:
+ PSYoungGen      total 38400K, used 3328K [0x00000000d5f00000, 0x00000000d8980000, 0x0000000100000000)
+  eden space 33280K, 10% used [0x00000000d5f00000,0x00000000d62402f0,0x00000000d7f80000)
+  from space 5120K, 0% used [0x00000000d8480000,0x00000000d8480000,0x00000000d8980000)
+  to   space 5120K, 0% used [0x00000000d7f80000,0x00000000d7f80000,0x00000000d8480000)
+ ParOldGen       total 87552K, used 0K [0x0000000081c00000, 0x0000000087180000, 0x00000000d5f00000)
+  object space 87552K, 0% used [0x0000000081c00000,0x0000000081c00000,0x0000000087180000)
+ Metaspace       used 2540K, capacity 4480K, committed 4480K, reserved 1056768K
+  class space    used 283K, capacity 384K, committed 384K, reserved 1048576K
+
+Card table byte_map: [0x0000000011b20000,0x0000000011f20000] byte_map_base: 0x0000000011712000
+
+Marking Bits: (ParMarkBitMap*) 0x0000000076ebbe30
+ Begin Bits: [0x00000000125d0000, 0x0000000014560000)
+ End Bits:   [0x0000000014560000, 0x00000000164f0000)
+
+Polling page: 0x0000000000a80000
+
+CodeCache: size=245760Kb used=1213Kb max_used=1213Kb free=244546Kb
+ bounds [0x0000000002760000, 0x00000000029d0000, 0x0000000011760000]
+ total_blobs=312 nmethods=77 adapters=148
+ compilation: enabled
+
+Compilation events (10 events):
+Event: 0.321 Thread 0x0000000018be0800 nmethod 72 0x0000000002883250 code [0x00000000028833a0, 0x00000000028834b0]
+Event: 0.321 Thread 0x0000000018be0800   73       1       java.net.Parts::getRef (5 bytes)
+Event: 0.321 Thread 0x0000000018be0800 nmethod 73 0x0000000002882f90 code [0x00000000028830e0, 0x00000000028831f0]
+Event: 0.321 Thread 0x0000000018be0800   74       1       java.net.URL::getUserInfo (5 bytes)
+Event: 0.321 Thread 0x0000000018be0800 nmethod 74 0x0000000002887590 code [0x00000000028876e0, 0x00000000028877f0]
+Event: 0.321 Thread 0x000000001729e000 nmethod 70 0x0000000002882c10 code [0x0000000002882d60, 0x0000000002882e78]
+Event: 0.322 Thread 0x0000000018be0800   75       3       sun.nio.cs.UTF_8$Encoder::encode (359 bytes)
+Event: 0.323 Thread 0x0000000018be0800 nmethod 75 0x00000000028891d0 code [0x00000000028893c0, 0x0000000002889ed8]
+Event: 0.324 Thread 0x0000000018be0800   76       3       java.io.WinNTFileSystem::normalize (231 bytes)
+Event: 0.329 Thread 0x00000000172a1000   77       4       java.lang.String::indexOf (70 bytes)
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (4 events):
+Event: 0.081 Thread 0x000000000266d000 Exception <a 'java/lang/NoSuchMethodError': Method sun.misc.Unsafe.defineClass(Ljava/lang/String;[BII)Ljava/lang/Class; name or signature does not match> (0x00000000d5f07cc0) thrown at [C:\ade\jenkins\workspace\8-2-build-windows-amd64-cygwin\jdk8u241\331\
+Event: 0.081 Thread 0x000000000266d000 Exception <a 'java/lang/NoSuchMethodError': Method sun.misc.Unsafe.prefetchRead(Ljava/lang/Object;J)V name or signature does not match> (0x00000000d5f07fa8) thrown at [C:\ade\jenkins\workspace\8-2-build-windows-amd64-cygwin\jdk8u241\331\hotspot\src\share\
+Event: 0.326 Thread 0x000000000266d000 Exception <a 'java/lang/OutOfMemoryError'> (0x00000000d6104978) thrown at [C:\ade\jenkins\workspace\8-2-build-windows-amd64-cygwin\jdk8u241\331\hotspot\src\share\vm\prims\jni.cpp, line 736]
+Event: 0.327 Thread 0x000000000266d000 Exception <a 'java/lang/OutOfMemoryError'> (0x00000000d6104978) thrown at [C:\ade\jenkins\workspace\8-2-build-windows-amd64-cygwin\jdk8u241\331\hotspot\src\share\vm\prims\jvm.cpp, line 1506]
+
+Events (10 events):
+Event: 0.327 loading class java/lang/Throwable$WrappedPrintStream
+Event: 0.327 loading class java/lang/Throwable$PrintStreamOrWriter
+Event: 0.327 loading class java/lang/Throwable$PrintStreamOrWriter done
+Event: 0.327 loading class java/lang/Throwable$WrappedPrintStream done
+Event: 0.327 loading class java/util/IdentityHashMap
+Event: 0.328 loading class java/util/IdentityHashMap done
+Event: 0.328 loading class java/util/IdentityHashMap$KeySet
+Event: 0.328 loading class java/util/IdentityHashMap$KeySet done
+Event: 0.329 Thread 0x000000000266d000 DEOPT PACKING pc=0x0000000002873340 sp=0x000000000255ede0
+Event: 0.329 Thread 0x000000000266d000 DEOPT UNPACKING pc=0x00000000027a7890 sp=0x000000000255eae0 mode 0
+
+
+Dynamic libraries:
+0x00007ff7dd250000 - 0x00007ff7dd287000 	C:\Program Files (x86)\Common Files\Oracle\Java\javapath\java.exe
+0x00007ffad00b0000 - 0x00007ffad02a4000 	C:\Windows\SYSTEM32\ntdll.dll
+0x00007ffacf590000 - 0x00007ffacf64d000 	C:\Windows\System32\KERNEL32.DLL
+0x00007ffacd800000 - 0x00007ffacdac7000 	C:\Windows\System32\KERNELBASE.dll
+0x00007ffacffc0000 - 0x00007ffad006a000 	C:\Windows\System32\ADVAPI32.dll
+0x00007fface150000 - 0x00007fface1ee000 	C:\Windows\System32\msvcrt.dll
+0x00007fface860000 - 0x00007fface8fb000 	C:\Windows\System32\sechost.dll
+0x00007fface990000 - 0x00007ffaceab3000 	C:\Windows\System32\RPCRT4.dll
+0x00007fface640000 - 0x00007fface7e0000 	C:\Windows\System32\USER32.dll
+0x00007fface090000 - 0x00007fface0b2000 	C:\Windows\System32\win32u.dll
+0x00007fface120000 - 0x00007fface14a000 	C:\Windows\System32\GDI32.dll
+0x00007ffacdbd0000 - 0x00007ffacdcda000 	C:\Windows\System32\gdi32full.dll
+0x00007ffacdce0000 - 0x00007ffacdd7d000 	C:\Windows\System32\msvcp_win.dll
+0x00007ffacdf90000 - 0x00007fface090000 	C:\Windows\System32\ucrtbase.dll
+0x00007ffab13e0000 - 0x00007ffab167a000 	C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.1_none_b555e41d4684ddec\COMCTL32.dll
+0x00007ffacebf0000 - 0x00007ffacec20000 	C:\Windows\System32\IMM32.DLL
+0x0000000076fa0000 - 0x0000000077072000 	C:\Program Files\Java\jre1.8.0_241\bin\msvcr100.dll
+0x0000000076690000 - 0x0000000076f3c000 	C:\Program Files\Java\jre1.8.0_241\bin\server\jvm.dll
+0x00007fface840000 - 0x00007fface848000 	C:\Windows\System32\PSAPI.DLL
+0x00007ffac8d20000 - 0x00007ffac8d29000 	C:\Windows\SYSTEM32\WSOCK32.dll
+0x00007ffacfe80000 - 0x00007ffacfeeb000 	C:\Windows\System32\WS2_32.dll
+0x00007ffab3c60000 - 0x00007ffab3c87000 	C:\Windows\SYSTEM32\WINMM.dll
+0x00007ffabb1f0000 - 0x00007ffabb1fa000 	C:\Windows\SYSTEM32\VERSION.dll
+0x00007ffac8d10000 - 0x00007ffac8d1f000 	C:\Program Files\Java\jre1.8.0_241\bin\verify.dll
+0x00007ffac50d0000 - 0x00007ffac50f9000 	C:\Program Files\Java\jre1.8.0_241\bin\java.dll
+0x00007ffac4f70000 - 0x00007ffac4f86000 	C:\Program Files\Java\jre1.8.0_241\bin\zip.dll
+0x00007ffacf6e0000 - 0x00007ffacfe15000 	C:\Windows\System32\SHELL32.dll
+0x00007ffacb990000 - 0x00007ffacc11f000 	C:\Windows\SYSTEM32\windows.storage.dll
+0x00007ffacec20000 - 0x00007ffacef73000 	C:\Windows\System32\combase.dll
+0x00007ffacd210000 - 0x00007ffacd23b000 	C:\Windows\SYSTEM32\Wldp.dll
+0x00007fface450000 - 0x00007fface4fe000 	C:\Windows\System32\SHCORE.dll
+0x00007ffacfe20000 - 0x00007ffacfe75000 	C:\Windows\System32\shlwapi.dll
+0x00007ffacd740000 - 0x00007ffacd75f000 	C:\Windows\SYSTEM32\profapi.dll
+
+VM Arguments:
+java_command: App 54087
+java_class_path (initial): c:\Users\HP ProBook 2022\.vscode\extensions\adamvoss.vscode-languagetool-3.8.0\lib\languagetool-languageserver\build\install\languagetool-languageserver\bin\..\lib\annotations-12.0.jar;c:\Users\HP ProBook 2022\.vscode\extensions\adamvoss.vscode-languagetool-3.8.0\lib\languagetool-languageserver\build\install\languagetool-languageserver\bin\..\lib\autolink-0.6.0.jar;c:\Users\HP ProBook 2022\.vscode\extensions\adamvoss.vscode-languagetool-3.8.0\lib\languagetool-languageserver\build\install\languagetool-languageserver\bin\..\lib\berkeleylm-1.1.2.jar;c:\Users\HP ProBook 2022\.vscode\extensions\adamvoss.vscode-languagetool-3.8.0\lib\languagetool-languageserver\build\install\languagetool-languageserver\bin\..\lib\commons-lang3-3.5.jar;c:\Users\HP ProBook 2022\.vscode\extensions\adamvoss.vscode-languagetool-3.8.0\lib\languagetool-languageserver\build\install\languagetool-languageserver\bin\..\lib\commons-logging-1.2.jar;c:\Users\HP ProBook 2022\.vscode\extensions\adamvoss.vscode-languagetool-3.8.0\lib\languagetool-languageserver\build\install\languagetool-languageserver\bin\..\lib\flexmark-0.19.1.jar;c:\Users\HP ProBook 2022\.vscode\extensions\adamvoss.vscode-languagetool-3.8.0\lib\languagetool-languageserver\build\install\languagetool-languageserver\bin\..\lib\flexmark-all-0.19.1.jar;c:\Users\HP ProBook 2022\.vscode\extensions\adamvoss.vscode-languagetool-3.8.0\lib\languagetool-languageserver\build\install\languagetool-languageserver\bin\..\lib\flexmark-ext-abbreviation-0.19.1.jar;c:\Users\HP ProBook 2022\.vscode\extensions\adamvoss.vscode-languagetool-3.8.0\lib\languagetool-languageserver\build\install\languagetool-languageserver\bin\..\lib\flexmark-ext-anchorlink-0.19.1.jar;c:\Users\HP ProBook 2022\.vscode\extensions\adamvoss.vscode-languagetool-3.8.0\lib\languagetool-languageserver\build\install\languagetool-languageserver\bin\..\lib\flexmark-ext-aside-0.19.1.jar;c:\Users\HP ProBook 2022\.vscode\extensions\adamvoss.vscode-languagetool-3.8.0
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+CLASSPATH=c:\Users\HP ProBook 2022\.vscode\extensions\adamvoss.vscode-languagetool-3.8.0\lib\languagetool-languageserver\build\install\languagetool-languageserver\bin\..\lib\*;c:\Users\HP ProBook 2022\.vscode\extensions\adamvoss.vscode-languagetool-uk-3.8.0\lib\*
+PATH=C:\Users\HP ProBook 2022\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\HP ProBook 2022\bin;C:\Python310\Scripts;C:\Python310;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files\7-Zip;C:\Program Files (x86)\Common Files\Acronis\SnapAPI;C:\Program Files\Git\cmd;C:\ProgramData\chocolatey\bin;C:\Program Files\nodejs;C:\Program Files\Microsoft SQL Server\150\Tools\Binn;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn;C:\Program Files\dotnet;C:\Program Files (x86)\PuTTY;C:\Users\HP ProBook 2022\.console-ninja\.bin;C:\Users\HP ProBook 2022\AppData\Local\Microsoft\WindowsApps;C:\Users\HP ProBook 2022\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\HP ProBook 2022\AppData\Roaming\npm;C:\Users\HP ProBook 2022\.dotnet\tools;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+USERNAME=HP ProBook 2022
+SHELL=C:\Program Files\Git\usr\bin\bash.exe
+DISPLAY=needs-to-be-defined
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 78 Stepping 3, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 10.0 , 64 bit Build 19041 (10.0.19041.292)
+
+CPU:total 4 (initial active 4) (2 cores per cpu, 2 threads per core) family 6 model 78 stepping 3, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, 3dnowpref, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2, adx
+
+Memory: 4k page, physical 8266336k(1585740k free), swap 10363488k(1156k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (25.241-b07) for windows-amd64 JRE (1.8.0_241-b07), built on Dec 11 2019 10:21:40 by "rejava" with MS VC++ 10.0 (VS2010)
+
+time: Sun Apr 09 17:32:06 2023
+timezone: Ô³íëÿíä³ÿ (ë³òî)
+elapsed time: 0 seconds (0d 0h 0m 0s)
+
