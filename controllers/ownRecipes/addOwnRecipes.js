@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const { Recipe } = require("../../models");
 
 const addOwnRecipes = async (req, res) => {
@@ -5,7 +6,7 @@ const addOwnRecipes = async (req, res) => {
   const preview = req.file?.path;
   const { title, category, instructions, description, time, ingredients } =
     req.body;
-  const ingredientsParsed = ingredients.map((el) => JSON.parse(el));
+  const ingredientsParsed = JSON.parse(ingredients);
   const result = await Recipe.create({
     title,
     preview,
@@ -13,9 +14,14 @@ const addOwnRecipes = async (req, res) => {
     description,
     category,
     time,
-    ingredients: ingredientsParsed,
+    ingredients: ingredientsParsed.map((el) => ({
+      ttl: el.ttl,
+      thb: el.thb,
+      measure: el.measure,
+      id: mongoose.Types.ObjectId(el.id),
+    })),
     instructions,
-    owner: userId,
+    owner: mongoose.Types.ObjectId(userId),
   });
 
   res.status(201).json({ result });
