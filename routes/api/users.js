@@ -31,6 +31,4 @@ router.post('/:userId/own-recipes', auth, uploadCloud.single('preview'), ownReci
 
 router.delete('/own-recipes/:id', auth, ownRecipesCtrl.removeOwnRecipes);
 
-// router.get("/info/:userId", auth, authCtrl.getUserInfo);
-// чи потрібен??????
 module.exports = router;

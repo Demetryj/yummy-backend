@@ -20,36 +20,6 @@ const getRecipesByCategory = async (req, res) => {
       },
     },
 
-    // -----------------------------------------------------------------------------------------------
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    // Нажаль, при наявності нижчезакоментованої частини коду, запит  !!САМЕ З ПАРАМЕТРОМ "Beef" видає -- {
-    //   "message": "PlanExecutor error during aggregation :: caused by :: $mergeObjects requires object inputs, but input \"Cheese\" is of type string"
-    // }
-
-    // {
-    //   $set: {
-    //     ingredients: {
-    //       $map: {
-    //         input: "$ingredients",
-    //         in: {
-    //           $mergeObjects: [
-    //             "$$this",
-    //             {
-    //               $arrayElemAt: [
-    //                 "$ingr_info",
-    //                 {
-    //                   $indexOfArray: ["$ingr_info._id", "$$this.id"],
-    //                 },
-    //               ],
-    //             },
-    //           ],
-    //         },
-    //       },
-    //     },
-    //   },
-    // },
-
     {
       $unset: ["ingredients._id", "createdAt", "updatedAt"],
     },

@@ -16,8 +16,6 @@ router.get("/category/list", auth, recipesCtrl.getCategoriesList);
 
 router.get("/category/:alias", auth, recipesCtrl.getRecipesByCategory);
 
-// router.get("/all/popular", auth, recipesCtrl.getRecipesPopular);
-
 // ендпоінт для додавання рецептів до обраних
 router.patch(
   "/:recipeId/favorites/true",
