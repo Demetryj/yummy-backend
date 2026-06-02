@@ -1,15 +1,120 @@
-## GoIT Node.js Course Template
+# SoYummy Backend
 
-Кожна нова гілка для таски повинна робитися з main.
+Backend API for the SoYummy recipe application.
 
-Після того, як ви закінчили виконувати таску у своїй гілці, необхідно зробити пулл-реквест (PR). Потім додати тімліда для рев'ю коду. Тільки після того, як тімлід заапрувить PR та виконає мердж гілки у майстерб видаляйте гілку, в якій ви працювали.
+The server provides authentication, recipe management, search, favorites, shopping list functionality, user profile updates, email verification, and subscription features.
 
-У разі наявності завужань, тімлід зробить відповідний коментар. Виправте зауваження та зробіть коміт у гілці, в якій ви працювали. Зміни підтягнуться у PR автоматично після того, як ви відправите коміт з виправленнями на github.
-Після виправлення знову додайте тімліда на рев'ю коду.
+## Tech Stack
 
-### Команди:
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT
+- Joi
+- Multer
+- Cloudinary
+- SendGrid
+- Swagger
+- CORS
+- Morgan
 
-- `npm start` &mdash; старт сервера в режимі production
-- `npm run start:dev` &mdash; старт сервера в режимі розробки (development)
-- `npm run lint` &mdash; запустити виконання перевірки коду з eslint, необхідно виконувати перед кожним PR та виправляти всі помилки лінтера
-- `npm lint:fix` &mdash; та ж перевірка лінтера, але з автоматичними виправленнями простих помилок
+## Features
+
+- User registration and login
+- JWT-based authentication
+- Email verification
+- User profile update with avatar upload
+- Get recipes by category
+- Get recipe details
+- Search recipes by title, category, or ingredient
+- Add and remove favorite recipes
+- Add and delete own recipes
+- Manage shopping list
+- Subscribe to newsletter
+- API documentation with Swagger
+
+## API Documentation
+
+Swagger documentation is available for the backend API.
+
+```txt
+https://soyummy-pg-2.onrender.com/api-docs
+````
+
+## Main API Routes
+
+```txt
+POST   /api/users/register
+POST   /api/users/signin
+GET    /api/users/current
+GET    /api/users/logout
+POST   /api/users/verify
+GET    /api/users/verify/:verificationToken
+
+GET    /api/recipes/main-page
+GET    /api/recipes/popular-recipes
+GET    /api/recipes/:recipeId
+GET    /api/recipes/category/list
+GET    /api/recipes/category/:alias
+GET    /api/recipes/favorites/list
+PATCH  /api/recipes/:recipeId/favorites/true
+PATCH  /api/recipes/:recipeId/favorites/false
+
+GET    /api/search
+GET    /api/search/:ingredient
+
+GET    /api/shopping-list
+POST   /api/shopping-list/:id
+DELETE /api/shopping-list/:id
+```
+
+## Environment Variables
+
+Create a `.env` file based on `env.example`:
+
+```env
+DB_HOST=
+PORT=
+SECRET_KEY=
+SENDGRID_API_KEY=
+EMAIL_FROM=
+CLOUDINARY_NAME=
+CLOUDINARY_KEY=
+CLOUDINARY_SECRET=
+```
+
+## Installation
+
+```bash
+npm install
+```
+
+## Running the Project
+
+Development mode:
+
+```bash
+npm run start:dev
+```
+
+Production mode:
+
+```bash
+npm start
+```
+
+## Scripts
+
+```bash
+npm start
+npm run start:dev
+npm run lint
+npm run lint:fix
+```
+
+## Project Status
+
+This backend was created as a team project for a recipe application.
+
+
